@@ -1,0 +1,28 @@
+diff --git a/index.cjs b/index.cjs
+index 5b666e0fea0eeda8409063673ee4896d07eab773..f9546766a74da73845d76f4d4fceb617ea63be7f 100644
+--- a/index.cjs
++++ b/index.cjs
+@@ -2857,7 +2857,8 @@ function useElementVisibility(element, { window = defaultWindow, scrollTarget }
+     },
+     {
+       root: scrollTarget,
+-      window
++      window,
++      threshold: 0
+     }
+   );
+   return elementIsVisible;
+diff --git a/index.mjs b/index.mjs
+index 1da266d3ef2536a67a8a2f5dca17dca966674f03..24cdca01fb832db699e72409f4a8abc32e398087 100644
+--- a/index.mjs
++++ b/index.mjs
+@@ -2856,7 +2856,8 @@ function useElementVisibility(element, { window = defaultWindow, scrollTarget }
+     },
+     {
+       root: scrollTarget,
+-      window
++      window,
++      threshold: 0
+     }
+   );
+   return elementIsVisible;
