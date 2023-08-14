@@ -13,6 +13,7 @@ useHead({
 
 <template>
   <BImageGallery />
+  <ModalContainer />
   <footer>
     <p class="copyright">&copy; {{ new Date().getFullYear() }} · 本站所有图片均来源于必应搜索</p>
   </footer>

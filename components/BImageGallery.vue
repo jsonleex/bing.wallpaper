@@ -1,58 +1,37 @@
 <script setup lang="ts">
-import { BingImage } from 'types/bing';
-
-const images = ref<BingImage[]>([])
-
-const loading = ref(false)
-const nextable = ref(true)
-
-const mkt = ref('zh-CN')
-const idx = ref(0)
-const count = ref(30)
-
-async function loadImages () {
-  if (loading.value) return
-  loading.value = true
-
-  const query = {
-    mkt: toValue(mkt),
-    idx: toValue(idx),
-    count: toValue(count),
-  }
-
-  const newImages = await $fetch('/api/list', { query })
-
-  loading.value = false
-  images.value.push(...newImages)
-  nextable.value = newImages.length > 0
-}
-
-watch([mkt, count], async () => {
-  idx.value = 0
-  images.value = []
-  await loadImages()
+const query = reactive({
+  idx: 0,
+  count: 30,
+  mkt: 'zh-CN'
 })
 
+const {
+  loading,
+  nextable,
+  images,
+  loadImages,
+  openImagePreviewDialog
+} = useImages()
+
 onMounted(async () => {
-  await loadImages()
+  await loadImages(toValue(query))
 
   useInfiniteScroll(
     document,
     async () => {
       if (loading.value || !nextable.value) return
-      idx.value += count.value
-      await loadImages()
+      query.idx += query.count
+      await loadImages(toValue(query))
     },
     { distance: 100, behavior: 'smooth' }
   )
 })
-
 </script>
 
 <template>
   <div class="gallery">
-    <template v-for="image in images">
-      <BImageCard :image="image" />
+    <template v-for="(image, index) in images">
+      <BImageCard :image="image" @click="openImagePreviewDialog(index)" />
     </template>
   </div>
 </template>
