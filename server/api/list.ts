@@ -3,7 +3,7 @@ import { buildStorageKey } from "../utils/bing"
 
 async function getBingImages (idx = 0, count = 1, mkt = 'en-US') {
   const images: BingImage[] = []
-  const storage = useStorage<BingImage>('assets/archive')
+  const storage = useStorage<BingImage>('archive')
 
   const today = new Date()
 

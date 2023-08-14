@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   const updates: [string, BingImage][] = []
 
   const key = buildStorageKey(new Date())
-  const storage = useStorage('assets/archive')
+  const storage = useStorage('archive')
 
   for (const mkt of locations) {
     if (await storage.hasItem(`${mkt}/${key}`)) {
