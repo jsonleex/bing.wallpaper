@@ -10,19 +10,9 @@ export default defineNuxtConfig({
     GITHUB_TOKEN: process.env.GITHUB_TOKEN
   },
   nitro: {
-    storage: {
-      archive: {
-        driver: 'github',
-        token: process.env.GITHUB_TOKEN,
-        repo: 'jsonleex/leex.wallpaper',
-        dir: 'archive',
-      }
-    },
-    devStorage: {
-      archive: {
-        driver: 'fs',
-        base: resolve(process.cwd(), 'archive'),
-      }
-    }
+    serverAssets: [{
+      baseName: 'archive',
+      dir: resolve(process.cwd(), 'archive'),
+    }]
   }
 })
