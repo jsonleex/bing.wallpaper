@@ -2,11 +2,5 @@
   "github": {
     "silent": true
   },
-  "ignoreCommand": "git log -1 --pretty=oneline --abbrev-commit | grep -w \"\\[skip deploy\\]\" && exit 0 || exit 1",
-  "crons": [
-    {
-      "path": "/api/update?commit=true",
-      "schedule": "0 0 * * *"
-    }
-  ]
+  "ignoreCommand": "git log -1 --pretty=oneline --abbrev-commit | grep -w \"\\[skip deploy\\]\" && exit 0 || exit 1"
 }

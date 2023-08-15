@@ -1,0 +1,29 @@
+name: Update Archive
+
+on:
+  schedule:
+    # UTC 08:18 & 16:18
+    # 北京 16:18 & 00:18
+    - cron: '18 8,16 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Fetch Updates from API
+        run: node scripts/update-archive.mjs
+      - name: Commit Updates to Github
+        run: |
+          git config user.name "leex"
+          git config user.email "jsonleex@163.com"
+          git add ./archive
+          git status
+          git commit -m "ci: update archive" && git push

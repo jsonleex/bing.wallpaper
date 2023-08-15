@@ -6,9 +6,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt'
   ],
   devtools: { enabled: true },
-  runtimeConfig: {
-    GITHUB_TOKEN: process.env.GITHUB_TOKEN
-  },
   nitro: {
     serverAssets: [{
       baseName: 'archive',
