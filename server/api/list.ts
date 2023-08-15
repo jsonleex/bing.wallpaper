@@ -1,11 +1,16 @@
 import { BingImage } from "@/types/bing"
-import { buildStorageKey } from "../utils/bing"
+import { SupportedMkt, buildStorageKey, getNewDateByMkt, supportedMkt } from "../utils/bing"
 
-async function getBingImages (idx = 0, count = 1, mkt = 'en-US') {
+async function getBingImages (idx = 0, count = 1, mkt: SupportedMkt = 'en-US') {
+  if (!supportedMkt.includes(mkt)) {
+    console.warn(`Unsupported mkt: ${mkt}`)
+    mkt = 'en-US'
+  }
+
   const images: BingImage[] = []
   const storage = useStorage<BingImage>('assets/archive')
 
-  const today = new Date()
+  const today = getNewDateByMkt(mkt)
 
   // ! 注意：下面两行不能交换位置
   const start = new Date(today.setDate(today.getDate() - idx))
@@ -34,5 +39,5 @@ export default defineEventHandler(async (event) => {
   const count = Number(query.count) || 1
   const mkt = query.mkt || 'en-US'
 
-  return await getBingImages(idx, count, mkt)
+  return await getBingImages(idx, count, mkt as SupportedMkt)
 })

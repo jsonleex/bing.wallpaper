@@ -1,23 +1,11 @@
 import { BingImage } from "@/types/bing"
-import { buildStorageKey } from "../utils/bing"
-
-const locations = [
-  "de-DE",
-  "en-CA",
-  "en-GB",
-  "en-IN",
-  "en-US",
-  "fr-FR",
-  "it-IT",
-  "ja-JP",
-  "zh-CN"
-]
+import { buildStorageKey, supportedMkt } from "../utils/bing"
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event) as { idx: number }
   const updates: [string, BingImage][] = []
 
-  for (const mkt of locations) {
+  for (const mkt of supportedMkt) {
     const images = await fetchBingImages({ n: 1, idx: Number(query.idx) || 0, mkt })
 
     for (const image of images) {

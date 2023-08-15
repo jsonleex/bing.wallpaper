@@ -12,6 +12,20 @@ interface BingImageRaw {
   hsh: string,
 }
 
+export const supportedMkt = [
+  "de-DE",
+  "en-CA",
+  "en-GB",
+  "en-IN",
+  "en-US",
+  "fr-FR",
+  "it-IT",
+  "ja-JP",
+  "zh-CN",
+] as const
+
+export type SupportedMkt = typeof supportedMkt[number]
+
 const imagePrefixUrl = 'https://www.bing.com'
 
 export async function fetchBingImages (query: BingImageQuery) {
@@ -43,4 +57,21 @@ export function buildStorageKey (date: Date, prefix?: string) {
   const DD = String(date.getDate()).padStart(2, '0')
   const key = `${YYYY}${MM}/${YYYY}${MM}${DD}.json`
   return prefix ? `${prefix}/${key}` : key
+}
+
+const timeOffsetByMkt: Record<SupportedMkt, number> = {
+  'en-CA': -4, // America/Toronto 加拿大
+  'en-US': -4, // America/New_York 美国
+  'en-IN': +5, // Asia/Kolkata 印度
+  'en-GB': +1, // Europe/London 英国
+  'de-DE': +2, // Europe/Berlin 德国
+  'fr-FR': +2, // Europe/Paris 法国
+  'it-IT': +2, // Europe/Rome 意大利
+  'ja-JP': +9, // Asia/Tokyo 日本
+  'zh-CN': +8, // Asia/Shanghai 中国
+}
+
+export function getNewDateByMkt (mkt: SupportedMkt) {
+  const timeOffset = timeOffsetByMkt[mkt] * 60 * 60 * 1000
+  return new Date(Date.now() + timeOffset)
 }
