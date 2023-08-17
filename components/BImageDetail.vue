@@ -1,7 +1,14 @@
 <script setup lang="ts">
 const { index, image, closeImagePreviewDialog, nextable, preable } = useImagePreview()
+
 const uhd = useImageDownloader(toRef(() => image.value.url), '4k')
 const hd = useImageDownloader(toRef(() => image.value.url), '1080p')
+
+const openCopyrightlink = (link: string) => link && window.open(link, '_blank')
+
+const { ArrowLeft, ArrowRight } = useMagicKeys()
+whenever(ArrowLeft, () => preable.value && index.value--)
+whenever(ArrowRight, () => nextable.value && index.value++)
 </script>
 <template>
   <div v-if="image" class="image-detail">
@@ -10,43 +17,45 @@ const hd = useImageDownloader(toRef(() => image.value.url), '1080p')
       <div class="image-title">{{ image.title }}</div>
       <div class="image-copyright">{{ image.copyright }}</div>
       <div class="image-actions">
-        <button @click="closeImagePreviewDialog">
+        <button :disabled="!image.copyrightlink" @click="openCopyrightlink(image.copyrightlink)">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path fill="none" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-              d="m7 7l10 10M7 17L17 7" />
+            <path fill="currentColor"
+              d="m5.71 3l3.593 1.264v12.645l5.061-2.919l-2.48-1.165l-1.566-3.897l7.974 2.802v4.073l-8.984 5.183l-3.595-2L5.71 3z" />
           </svg>
         </button>
         <button :disabled="!preable" @click="() => index--">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path fill="none" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-              d="m14 7l-5 5m0 0l5 5" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+            <path fill="currentColor" d="M10 16L20 6l1.4 1.4l-8.6 8.6l8.6 8.6L20 26z" />
           </svg>
         </button>
         <button :disabled="!nextable" @click="() => index++">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path fill="none" stroke="#888888" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-              d="m10 17l5-5m0 0l-5-5" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+            <path fill="currentColor" d="M22 16L12 26l-1.4-1.4l8.6-8.6l-8.6-8.6L12 6z" />
           </svg>
         </button>
         <button :disabled="hd.disabled.value" @click="() => hd.download()" :loading="hd.downloading.value">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <g fill="none" stroke="#888888" stroke-linejoin="round" stroke-width="1.5">
-              <path
-                d="M2 14.5A4.5 4.5 0 0 0 6.5 19h12a3.5 3.5 0 0 0 .5-6.965a7 7 0 0 0-13.76-1.857A4.502 4.502 0 0 0 2 14.5Z" />
-              <path stroke-linecap="round" d="m10 13l2 2m0 0l2-2m-2 2V9" />
-            </g>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024">
+            <path fill="currentColor"
+              d="M624 706.3h-74.1V464c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v242.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.7a8 8 0 0 0 12.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9z" />
+            <path fill="currentColor"
+              d="M811.4 366.7C765.6 245.9 648.9 160 512.2 160S258.8 245.8 213 366.6C127.3 389.1 64 467.2 64 560c0 110.5 89.5 200 199.9 200H304c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8h-40.1c-33.7 0-65.4-13.4-89-37.7c-23.5-24.2-36-56.8-34.9-90.6c.9-26.4 9.9-51.2 26.2-72.1c16.7-21.3 40.1-36.8 66.1-43.7l37.9-9.9l13.9-36.6c8.6-22.8 20.6-44.1 35.7-63.4a245.6 245.6 0 0 1 52.4-49.9c41.1-28.9 89.5-44.2 140-44.2s98.9 15.3 140 44.2c19.9 14 37.5 30.8 52.4 49.9c15.1 19.3 27.1 40.7 35.7 63.4l13.8 36.5l37.8 10C846.1 454.5 884 503.8 884 560c0 33.1-12.9 64.3-36.3 87.7a123.07 123.07 0 0 1-87.6 36.3H720c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h40.1C870.5 760 960 670.5 960 560c0-92.7-63.1-170.7-148.6-193.3z" />
           </svg>
           <span>高清·1920x1080</span>
         </button>
         <button :disabled="uhd.disabled.value" @click="() => uhd.download()" :loading="uhd.downloading.value">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <g fill="none" stroke="#888888" stroke-linejoin="round" stroke-width="1.5">
-              <path
-                d="M2 14.5A4.5 4.5 0 0 0 6.5 19h12a3.5 3.5 0 0 0 .5-6.965a7 7 0 0 0-13.76-1.857A4.502 4.502 0 0 0 2 14.5Z" />
-              <path stroke-linecap="round" d="m10 13l2 2m0 0l2-2m-2 2V9" />
-            </g>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024">
+            <path fill="currentColor"
+              d="M624 706.3h-74.1V464c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v242.3H400c-6.7 0-10.4 7.7-6.3 12.9l112 141.7a8 8 0 0 0 12.6 0l112-141.7c4.1-5.2.4-12.9-6.3-12.9z" />
+            <path fill="currentColor"
+              d="M811.4 366.7C765.6 245.9 648.9 160 512.2 160S258.8 245.8 213 366.6C127.3 389.1 64 467.2 64 560c0 110.5 89.5 200 199.9 200H304c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8h-40.1c-33.7 0-65.4-13.4-89-37.7c-23.5-24.2-36-56.8-34.9-90.6c.9-26.4 9.9-51.2 26.2-72.1c16.7-21.3 40.1-36.8 66.1-43.7l37.9-9.9l13.9-36.6c8.6-22.8 20.6-44.1 35.7-63.4a245.6 245.6 0 0 1 52.4-49.9c41.1-28.9 89.5-44.2 140-44.2s98.9 15.3 140 44.2c19.9 14 37.5 30.8 52.4 49.9c15.1 19.3 27.1 40.7 35.7 63.4l13.8 36.5l37.8 10C846.1 454.5 884 503.8 884 560c0 33.1-12.9 64.3-36.3 87.7a123.07 123.07 0 0 1-87.6 36.3H720c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h40.1C870.5 760 960 670.5 960 560c0-92.7-63.1-170.7-148.6-193.3z" />
           </svg>
-          <span>4K·3840x2160</span>
+          <span>4k·3840x2160</span>
+        </button>
+        <button @click="closeImagePreviewDialog">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+            <path fill="currentColor"
+              d="M24 9.4L22.6 8L16 14.6L9.4 8L8 9.4l6.6 6.6L8 22.6L9.4 24l6.6-6.6l6.6 6.6l1.4-1.4l-6.6-6.6L24 9.4z" />
+          </svg>
         </button>
       </div>
     </div>
@@ -59,6 +68,10 @@ const hd = useImageDownloader(toRef(() => image.value.url), '1080p')
   position: relative;
   width: 94vw;
   border-radius: 2px;
+  background-size: 240px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url('/placeholder.svg');
 }
 
 .image-detail::before {
@@ -110,21 +123,28 @@ const hd = useImageDownloader(toRef(() => image.value.url), '1080p')
 
 .image-actions button {
   overflow: hidden;
-  gap: 0.25rem;
-  padding: 0 0.25rem;
+  gap: 2px;
+  padding: 2px;
   border-radius: 2px;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-  color: #888888;
-  background-color: rgba(255, 255, 255, 0.8);
+  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease-in;
+  backdrop-filter: blur(2px);
+}
+
+.image-actions button span {
+  margin-right: 2px;
 }
 
 .image-actions button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .image-actions button:not(:disabled):hover {
   opacity: 1;
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(0, 0, 0, 0.6);
 }
 </style>
