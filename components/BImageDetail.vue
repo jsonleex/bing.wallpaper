@@ -33,6 +33,12 @@ whenever(ArrowRight, () => nextable.value && index.value++)
             <path fill="currentColor" d="M22 16L12 26l-1.4-1.4l8.6-8.6l-8.6-8.6L12 6z" />
           </svg>
         </button>
+        <button @click="closeImagePreviewDialog">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+            <path fill="currentColor"
+              d="M24 9.4L22.6 8L16 14.6L9.4 8L8 9.4l6.6 6.6L8 22.6L9.4 24l6.6-6.6l6.6 6.6l1.4-1.4l-6.6-6.6L24 9.4z" />
+          </svg>
+        </button>
         <button :disabled="hd.disabled.value" @click="() => hd.download()" :loading="hd.downloading.value">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024">
             <path fill="currentColor"
@@ -40,7 +46,7 @@ whenever(ArrowRight, () => nextable.value && index.value++)
             <path fill="currentColor"
               d="M811.4 366.7C765.6 245.9 648.9 160 512.2 160S258.8 245.8 213 366.6C127.3 389.1 64 467.2 64 560c0 110.5 89.5 200 199.9 200H304c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8h-40.1c-33.7 0-65.4-13.4-89-37.7c-23.5-24.2-36-56.8-34.9-90.6c.9-26.4 9.9-51.2 26.2-72.1c16.7-21.3 40.1-36.8 66.1-43.7l37.9-9.9l13.9-36.6c8.6-22.8 20.6-44.1 35.7-63.4a245.6 245.6 0 0 1 52.4-49.9c41.1-28.9 89.5-44.2 140-44.2s98.9 15.3 140 44.2c19.9 14 37.5 30.8 52.4 49.9c15.1 19.3 27.1 40.7 35.7 63.4l13.8 36.5l37.8 10C846.1 454.5 884 503.8 884 560c0 33.1-12.9 64.3-36.3 87.7a123.07 123.07 0 0 1-87.6 36.3H720c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h40.1C870.5 760 960 670.5 960 560c0-92.7-63.1-170.7-148.6-193.3z" />
           </svg>
-          <span>高清·1920x1080</span>
+          <span>HD·1920x1080</span>
         </button>
         <button :disabled="uhd.disabled.value" @click="() => uhd.download()" :loading="uhd.downloading.value">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 1024 1024">
@@ -49,13 +55,7 @@ whenever(ArrowRight, () => nextable.value && index.value++)
             <path fill="currentColor"
               d="M811.4 366.7C765.6 245.9 648.9 160 512.2 160S258.8 245.8 213 366.6C127.3 389.1 64 467.2 64 560c0 110.5 89.5 200 199.9 200H304c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8h-40.1c-33.7 0-65.4-13.4-89-37.7c-23.5-24.2-36-56.8-34.9-90.6c.9-26.4 9.9-51.2 26.2-72.1c16.7-21.3 40.1-36.8 66.1-43.7l37.9-9.9l13.9-36.6c8.6-22.8 20.6-44.1 35.7-63.4a245.6 245.6 0 0 1 52.4-49.9c41.1-28.9 89.5-44.2 140-44.2s98.9 15.3 140 44.2c19.9 14 37.5 30.8 52.4 49.9c15.1 19.3 27.1 40.7 35.7 63.4l13.8 36.5l37.8 10C846.1 454.5 884 503.8 884 560c0 33.1-12.9 64.3-36.3 87.7a123.07 123.07 0 0 1-87.6 36.3H720c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h40.1C870.5 760 960 670.5 960 560c0-92.7-63.1-170.7-148.6-193.3z" />
           </svg>
-          <span>4k·3840x2160</span>
-        </button>
-        <button @click="closeImagePreviewDialog">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
-            <path fill="currentColor"
-              d="M24 9.4L22.6 8L16 14.6L9.4 8L8 9.4l6.6 6.6L8 22.6L9.4 24l6.6-6.6l6.6 6.6l1.4-1.4l-6.6-6.6L24 9.4z" />
-          </svg>
+          <span>4K·3840x2160</span>
         </button>
       </div>
     </div>
@@ -66,12 +66,15 @@ whenever(ArrowRight, () => nextable.value && index.value++)
 .image-detail {
   overflow: hidden;
   position: relative;
-  width: 94vw;
-  border-radius: 2px;
+  width: 90vw;
+  max-width: 1440px;
+  border-radius: 0.25rem;
   background-size: 240px;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url('/placeholder.svg');
+  /* For border-radius */
+  backdrop-filter: blur(0);
 }
 
 .image-detail::before {
@@ -94,7 +97,7 @@ whenever(ArrowRight, () => nextable.value && index.value++)
   padding: 2rem 4rem;
   width: 100%;
   color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(4px);
 }
 
@@ -118,6 +121,7 @@ whenever(ArrowRight, () => nextable.value && index.value++)
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-wrap: wrap;
   margin-top: 0.5rem;
 }
 
@@ -127,8 +131,9 @@ whenever(ArrowRight, () => nextable.value && index.value++)
   padding: 2px;
   border-radius: 2px;
   opacity: 0.9;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.24);
   transition: all 0.3s ease-in;
   backdrop-filter: blur(2px);
 }
@@ -145,6 +150,6 @@ whenever(ArrowRight, () => nextable.value && index.value++)
 .image-actions button:not(:disabled):hover {
   opacity: 1;
   color: rgba(255, 255, 255, 1);
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.48);
 }
 </style>

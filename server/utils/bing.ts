@@ -59,6 +59,9 @@ export function buildStorageKey (date: Date, prefix?: string) {
   return prefix ? `${prefix}/${key}` : key
 }
 
+/**
+ * 各语言环境下的时间偏移量，单位：小时
+ */
 const timeOffsetByMkt: Record<SupportedMkt, number> = {
   'en-CA': -4, // America/Toronto 加拿大
   'en-US': -4, // America/New_York 美国
@@ -71,7 +74,10 @@ const timeOffsetByMkt: Record<SupportedMkt, number> = {
   'zh-CN': +8, // Asia/Shanghai 中国
 }
 
+// 当前运行环境的时间偏移量，单位：分钟
+const SYSTEM_TIMEZONE_OFFSET = new Date().getTimezoneOffset()
+
 export function getNewDateByMkt (mkt: SupportedMkt) {
-  const timeOffset = timeOffsetByMkt[mkt] * 60 * 60 * 1000
-  return new Date(Date.now() + timeOffset)
+  const offset = (timeOffsetByMkt[mkt] * 60 + SYSTEM_TIMEZONE_OFFSET) * 60 * 1000
+  return new Date(Date.now() + offset)
 }

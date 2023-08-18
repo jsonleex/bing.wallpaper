@@ -12,6 +12,10 @@ useHead({
 </script>
 
 <template>
+  <header class="header">
+    <img src="/favicon.svg" alt="Bing" height="24">
+    <span><b>Bing Wallpaper Archive</b> · by <a href="https://github.com/jsonleex">leex</a></span>
+  </header>
   <BImageGallery />
   <ModalContainer />
   <footer>
@@ -63,6 +67,25 @@ button {
   transition: all .1s cubic-bezier(0, 0, 1, 1);
   appearance: none;
   user-select: none;
+}
+
+a {
+  color: inherit;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  background-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 1px 4px 7px rgba(0, 0, 0, 0.051);
+  backdrop-filter: blur(4px);
 }
 
 .copyright {

@@ -76,7 +76,7 @@ function bindTypeToAny($attrs: any) {
 <template>
   <Teleport to="body">
     <Transition name="dialog-visible" @transitionend="trapFocusDialog">
-      <div v-if="isVIf" v-show="isVShow" ref="elDialogRoot" class="dialog">
+      <div v-if="isVIf" v-show="isVShow" ref="elDialogRoot" class="dialog" :style="{ zIndex }">
         <div class="dialog-mask dialog-mask--blur" />
         <div class="dialog-mask dialog-mask--dimming" @click="clickMask" />
         <div class="dialog-content">
@@ -140,9 +140,9 @@ function bindTypeToAny($attrs: any) {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 0.5rem;
-  border-radius: 2px;
+  border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.24);
 }
 
 .dialog-visible-enter-active,

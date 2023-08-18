@@ -40,11 +40,11 @@ onMounted(async () => {
 .gallery {
   --gallery-columns: 1;
   display: grid;
-  gap: 1px;
+  gap: 0.5rem;
   grid-auto-flow: dense;
   grid-template-columns: repeat(var(--gallery-columns), minmax(0, 1fr));
   margin: 0 auto;
-  padding: 0.5px;
+  padding: 0.5rem;
 }
 
 @media screen and (min-width: 768px) {

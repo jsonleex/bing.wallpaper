@@ -11,5 +11,8 @@ export default defineNuxtConfig({
       baseName: 'archive',
       dir: resolve(process.cwd(), 'archive'),
     }]
+  },
+  experimental: {
+    inlineSSRStyles: false
   }
 })
