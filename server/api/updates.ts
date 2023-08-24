@@ -1,5 +1,4 @@
-import { BingImage } from "@/types/bing"
-import { buildStorageKey, supportedMkt } from "../utils/bing"
+import { BingImage, buildStorageKey, fetchBingImages, supportedMkt } from "@/utils/bing"
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event) as { idx: number }

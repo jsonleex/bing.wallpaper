@@ -1,8 +1,10 @@
 <script setup lang="ts">
+const mkt = getMktByRoute()
+
 const query = reactive({
   idx: 0,
   count: 30,
-  mkt: 'zh-CN'
+  mkt: mkt.code
 })
 
 const {
@@ -10,18 +12,19 @@ const {
   nextable,
   images,
   loadImages,
+  resetImages,
   openImagePreviewDialog
 } = useImages()
 
 onMounted(async () => {
-  await loadImages(toValue(query))
+  resetImages()
 
   useInfiniteScroll(
     document,
     async () => {
       if (loading.value || !nextable.value) return
-      query.idx += query.count
       await loadImages(toValue(query))
+      query.idx += query.count
     },
     { distance: 100, behavior: 'smooth' }
   )

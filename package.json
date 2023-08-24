@@ -15,8 +15,10 @@
     "@vueuse/core": "^10.3.0",
     "@vueuse/integrations": "^10.3.0",
     "@vueuse/nuxt": "^10.3.0",
-    "focus-trap": "^7.5.2",
     "nuxt": "^3.6.5"
+  },
+  "dependencies": {
+    "focus-trap": "^7.5.2"
   },
   "pnpm": {
     "patchedDependencies": {

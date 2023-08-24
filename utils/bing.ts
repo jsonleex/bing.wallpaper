@@ -1,4 +1,16 @@
-import { BingImage, BingImageQuery } from "@/types/bing"
+export interface BingImage {
+  url: string
+  date: string
+  title: string
+  copyright: string
+  copyrightlink: string
+}
+
+export interface BingImageQuery {
+  n: number
+  idx: number
+  mkt: string
+}
 
 interface BingImageRaw {
   startdate: string,
@@ -80,4 +92,27 @@ const SYSTEM_TIMEZONE_OFFSET = new Date().getTimezoneOffset()
 export function getNewDateByMkt (mkt: SupportedMkt) {
   const offset = (timeOffsetByMkt[mkt] * 60 + SYSTEM_TIMEZONE_OFFSET) * 60 * 1000
   return new Date(Date.now() + offset)
+}
+
+export const MktItems: { code: SupportedMkt, icon: string, name: string }[] = [
+  { code: "de-DE", icon: '🇩🇪', name: 'Deutsch', },
+  { code: "en-CA", icon: '🇨🇦', name: 'English (Canada)', },
+  { code: "en-GB", icon: '🇬🇧', name: 'English (UK)', },
+  { code: "en-IN", icon: '🇮🇳', name: 'English (India)', },
+  { code: "en-US", icon: '🇺🇸', name: 'English (US)', },
+  { code: "fr-FR", icon: '🇫🇷', name: 'Francais', },
+  { code: "it-IT", icon: '🇮🇹', name: 'Italiano', },
+  { code: "ja-JP", icon: '🇯🇵', name: '日本語', },
+  { code: "zh-CN", icon: '🇨🇳', name: '简体中文', }
+]
+
+export function getMktByRoute () {
+  let locale = useRoute().params.locale as SupportedMkt
+
+  if (!supportedMkt.includes(locale)) {
+    locale = 'en-US'
+    console.warn(`Unsupported locale: ${locale}, using en-US instead.`)
+  }
+
+  return MktItems.find((l) => l.code === locale)!
 }

@@ -1,4 +1,4 @@
-import { BingImage } from "types/bing";
+import { BingImage, SupportedMkt } from "@/utils/bing";
 
 const store = reactive({
   loading: false,
@@ -6,7 +6,7 @@ const store = reactive({
   images: [] as BingImage[],
 })
 
-async function loadImages (query: { idx: number, count: number, mkt: string }) {
+async function loadImages (query: { idx: number, count: number, mkt: SupportedMkt }) {
   if (store.loading || !store.nextable) {
     return
   }
@@ -16,11 +16,18 @@ async function loadImages (query: { idx: number, count: number, mkt: string }) {
   store.nextable = images.length > 0
 }
 
+function resetImages () {
+  store.images = []
+  store.nextable = true
+  store.loading = false
+}
+
 export function useImages () {
   return {
     ...toRefs(store),
 
     loadImages,
+    resetImages,
 
     isImagePreviewOpen: toRef(() => preview.isImagePreviewOpen),
     openImagePreviewDialog,

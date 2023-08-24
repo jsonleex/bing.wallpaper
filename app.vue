@@ -12,18 +12,41 @@ useHead({
 </script>
 
 <template>
-  <header class="header">
-    <img src="/favicon.svg" alt="Bing" height="24">
-    <span><b>Bing Wallpaper Archive</b> · by <a href="https://github.com/jsonleex">leex</a></span>
-  </header>
-  <BImageGallery />
-  <ModalContainer />
-  <footer>
-    <p class="copyright">&copy; {{ new Date().getFullYear() }} · 本站所有图片均来源于必应搜索</p>
-  </footer>
+  <NuxtPage />
 </template>
 
 <style>
+:root {
+  --rgb-dark: 0 0 0;
+  --rgb-blue: 0 164 239;
+  --rgb-green: 127, 186, 0;
+  --rgb-white: 255 255 255;
+}
+
+:root {
+  --opacity-lv0: 0.00;
+  --opacity-lv1: 0.12;
+  --opacity-lv2: 0.24;
+  --opacity-lv3: 0.36;
+  --opacity-lv4: 0.48;
+  --opacity-lv5: 0.6;
+  --opacity-lv6: 0.72;
+  --opacity-lv7: 0.84;
+  --opacity-lv8: 0.96;
+  --opacity-lv9: 1.00;
+
+  --divider-color-rgb: var(--rgb-dark);
+  --background-color-rgb: var(--rgb-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --divider-color-rgb: var(--rgb-white);
+    --background-color-rgb: var(--rgb-dark);
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -31,17 +54,12 @@ useHead({
 }
 
 html {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+  font-family: sans-serif;
 }
 
 body {
   margin: 0;
+  min-height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -71,27 +89,5 @@ button {
 
 a {
   color: inherit;
-}
-
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0 0 0.5rem 0.5rem;
-  background-color: rgba(255, 255, 255, 0.24);
-  box-shadow: 1px 4px 7px rgba(0, 0, 0, 0.051);
-  backdrop-filter: blur(4px);
-}
-
-.copyright {
-  margin-left: 3px;
-  opacity: 0.5;
-  font-size: smaller;
-  text-align: center;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BingImage } from 'types/bing';
+import { BingImage } from '@/utils/bing';
 const { image } = defineProps<{ image: BingImage }>()
 
 const thumbnail = computed(() => {

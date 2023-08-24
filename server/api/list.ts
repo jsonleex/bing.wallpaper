@@ -1,5 +1,4 @@
-import { BingImage } from "@/types/bing"
-import { SupportedMkt, buildStorageKey, getNewDateByMkt, supportedMkt } from "../utils/bing"
+import { BingImage, SupportedMkt, buildStorageKey, getNewDateByMkt, supportedMkt } from "@/utils/bing"
 
 async function getBingImages (idx = 0, count = 1, mkt: SupportedMkt = 'en-US') {
   if (!supportedMkt.includes(mkt)) {
