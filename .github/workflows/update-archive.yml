@@ -21,9 +21,11 @@ jobs:
       - name: Fetch Updates from API
         run: node scripts/update-archive.mjs
       - name: Commit Updates to Github
+        if: success()
         run: |
           git config user.name "leex"
           git config user.email "jsonleex@163.com"
-          git add ./archive
-          git status
-          git commit -m "ci: update archive" && git push
+          git add ./archive || true
+          git status -s
+          git commit -m "ci: update archive" || true
+          git push || true
