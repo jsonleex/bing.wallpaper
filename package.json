@@ -8,14 +8,18 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.4.5",
     "@nuxt/devtools": "latest",
     "@types/node": "^18.19.3",
     "@vueuse/core": "^10.7.0",
     "@vueuse/integrations": "^10.7.0",
     "@vueuse/nuxt": "^10.7.0",
+    "eslint": "^8.55.0",
     "nuxt": "^3.8.2"
   },
   "dependencies": {
