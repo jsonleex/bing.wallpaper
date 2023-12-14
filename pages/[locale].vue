@@ -1,9 +1,24 @@
+<script setup lang="ts">
+import { type SupportedMkt, isSupportedMkt } from '~/utils/bing'
+
+const locale = computed(() => {
+  return useRoute().params.locale as SupportedMkt
+})
+
+watch(locale, (val) => {
+  window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+
+  if (!isSupportedMkt(val))
+    navigateTo('/')
+})
+</script>
+
 <template>
   <header class="header-wrapper">
     <div class="header">
       <img src="/favicon.svg" alt="Bing" height="24">
       <b>Bing Wallpaper Archive</b>
-      <MarketSwitcher />
+      <MarketSwitcher :mkt="locale" />
       <a href="https://github.com/jsonleex/leex.wallpaper" target="_blank" style="margin-left: auto;font-size: 0;">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path
@@ -14,7 +29,7 @@
       </a>
     </div>
   </header>
-  <BImageGallery />
+  <BImageGallery :mkt="locale" />
   <ModalContainer />
   <footer>
     <p class="copyright">

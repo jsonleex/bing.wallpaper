@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const mkt = computed(() => getMktByRoute())
+const props = defineProps<{ mkt: string }>()
+
+const mkt = computed(() => {
+  return MktItems.find(item => item.code === props.mkt)
+})
 
 function handleClick(locale: string) {
   navigateTo(`/${locale}`)
@@ -9,11 +13,11 @@ function handleClick(locale: string) {
 
 <template>
   <div class="mkt">
-    <span class="mkt-icon">{{ mkt.icon }}</span>
+    <span class="mkt-icon">{{ mkt?.icon }}</span>
     <div class="mkt-popper">
       <ul class="mkt-list">
         <li
-          v-for="item in MktItems" :key="item.code" class="mkt-item" :class="[item.code === mkt.code && 'is-active']"
+          v-for="item in MktItems" :key="item.code" class="mkt-item" :class="[item.code === mkt?.code && 'is-active']"
           @click="() => handleClick(item.code)"
         >
           <span>{{ item.icon }}</span>

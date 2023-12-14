@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const mkt = getMktByRoute()
+const props = defineProps<{ mkt: SupportedMkt }>()
 
 const query = reactive({
   idx: 0,
   count: 30,
-  mkt: mkt.code,
+  mkt: props.mkt,
 })
 
 const {

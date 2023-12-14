@@ -107,13 +107,6 @@ export const MktItems: { code: SupportedMkt, icon: string, name: string }[] = [
   { code: 'zh-CN', icon: '🇨🇳', name: '简体中文' },
 ]
 
-export function getMktByRoute() {
-  let locale = useRoute().params.locale as SupportedMkt
-
-  if (!supportedMkt.includes(locale)) {
-    locale = 'en-US'
-    console.warn(`Unsupported locale: ${locale}, using en-US instead.`)
-  }
-
-  return MktItems.find(l => l.code === locale)!
+export function isSupportedMkt(mkt: string): mkt is SupportedMkt {
+  return supportedMkt.includes(mkt as SupportedMkt)
 }
