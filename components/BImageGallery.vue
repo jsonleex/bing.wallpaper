@@ -4,7 +4,7 @@ const mkt = getMktByRoute()
 const query = reactive({
   idx: 0,
   count: 30,
-  mkt: mkt.code
+  mkt: mkt.code,
 })
 
 const {
@@ -13,7 +13,7 @@ const {
   images,
   loadImages,
   resetImages,
-  openImagePreviewDialog
+  openImagePreviewDialog,
 } = useImages()
 
 onMounted(async () => {
@@ -22,18 +22,19 @@ onMounted(async () => {
   useInfiniteScroll(
     document,
     async () => {
-      if (loading.value || !nextable.value) return
+      if (loading.value || !nextable.value)
+        return
       await loadImages(toValue(query))
       query.idx += query.count
     },
-    { distance: 100, behavior: 'smooth' }
+    { distance: 100, behavior: 'smooth' },
   )
 })
 </script>
 
 <template>
   <div class="gallery">
-    <template v-for="(image, index) in images">
+    <template v-for="(image, index) in images" :key="index">
       <BImageCard :image="image" @click="openImagePreviewDialog(index)" />
     </template>
   </div>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { BingImage } from '@/utils/bing';
+import type { BingImage } from '@/utils/bing'
+
 const { image } = defineProps<{ image: BingImage }>()
 
 const thumbnail = computed(() => {
-  if (!image.url.includes('bing.com/th?id=')) {
+  if (!image.url.includes('bing.com/th?id='))
     return image.url
-  }
 
   return `${image.url}&w=480&h=270&c=7&rs=1&qlt=90&cb=1&pid=3`
 })
@@ -13,9 +13,13 @@ const thumbnail = computed(() => {
 
 <template>
   <div class="image-card">
-    <img :src="thumbnail" :alt="image.title" />
-    <div class="image-title">{{ image.title }}</div>
-    <div class="image-date">{{ image.date.replaceAll('-', '/') }}</div>
+    <img :src="thumbnail" :alt="image.title">
+    <div class="image-title">
+      {{ image.title }}
+    </div>
+    <div class="image-date">
+      {{ image.date.replaceAll('-', '/') }}
+    </div>
   </div>
 </template>
 

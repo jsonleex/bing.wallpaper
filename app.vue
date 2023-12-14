@@ -3,11 +3,11 @@ useHead({
   title: 'Bing Wallpaper Archive',
   meta: [
     { name: 'description', content: 'The Bing Wallpaper Archive.' },
-    { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
   ],
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-  ]
+  ],
 })
 </script>
 
@@ -24,7 +24,7 @@ useHead({
 }
 
 :root {
-  --opacity-lv0: 0.00;
+  --opacity-lv0: 0;
   --opacity-lv1: 0.12;
   --opacity-lv2: 0.24;
   --opacity-lv3: 0.36;
@@ -33,7 +33,7 @@ useHead({
   --opacity-lv6: 0.72;
   --opacity-lv7: 0.84;
   --opacity-lv8: 0.96;
-  --opacity-lv9: 1.00;
+  --opacity-lv9: 1;
 
   --divider-color-rgb: var(--rgb-dark);
   --background-color-rgb: var(--rgb-white);
@@ -82,7 +82,7 @@ button {
   cursor: pointer;
   background: transparent;
   border: 1px solid transparent;
-  transition: all .1s cubic-bezier(0, 0, 1, 1);
+  transition: all 0.1s cubic-bezier(0, 0, 1, 1);
   appearance: none;
   user-select: none;
 }

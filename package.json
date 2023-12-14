@@ -1,7 +1,7 @@
 {
   "name": "leex.wallpaper",
-  "private": true,
   "type": "module",
+  "private": true,
   "packageManager": "pnpm@8.12.1",
   "scripts": {
     "build": "nuxt build",
@@ -12,6 +12,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
+  "dependencies": {
+    "focus-trap": "^7.5.4"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.4.5",
     "@nuxt/devtools": "latest",
@@ -20,9 +23,7 @@
     "@vueuse/integrations": "^10.7.0",
     "@vueuse/nuxt": "^10.7.0",
     "eslint": "^8.55.0",
+    "eslint-plugin-format": "^0.1.0",
     "nuxt": "^3.8.2"
-  },
-  "dependencies": {
-    "focus-trap": "^7.5.4"
   }
 }

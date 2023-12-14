@@ -1,4 +1,4 @@
-import { BingImage, SupportedMkt } from "@/utils/bing";
+import type { BingImage, SupportedMkt } from '@/utils/bing'
 
 const store = reactive({
   loading: false,
@@ -6,23 +6,27 @@ const store = reactive({
   images: [] as BingImage[],
 })
 
-async function loadImages (query: { idx: number, count: number, mkt: SupportedMkt }) {
-  if (store.loading || !store.nextable) {
+const preview = reactive({
+  index: 0,
+  isImagePreviewOpen: false,
+})
+
+async function loadImages(query: { idx: number, count: number, mkt: SupportedMkt }) {
+  if (store.loading || !store.nextable)
     return
-  }
 
   const images = await $fetch('/api/list', { query })
   store.images.push(...images)
   store.nextable = images.length > 0
 }
 
-function resetImages () {
+function resetImages() {
   store.images = []
   store.nextable = true
   store.loading = false
 }
 
-export function useImages () {
+export function useImages() {
   return {
     ...toRefs(store),
 
@@ -35,21 +39,16 @@ export function useImages () {
   }
 }
 
-const preview = reactive({
-  index: 0,
-  isImagePreviewOpen: false,
-})
-
-function openImagePreviewDialog (index: number = 0) {
+function openImagePreviewDialog(index: number = 0) {
   preview.index = index
   preview.isImagePreviewOpen = true
 }
 
-function closeImagePreviewDialog () {
+function closeImagePreviewDialog() {
   preview.isImagePreviewOpen = false
 }
 
-export function useImagePreview () {
+export function useImagePreview() {
   const image = computed(() => store.images[preview.index])
   const preable = computed(() => preview.index > 0)
   const nextable = computed(() => preview.index < store.images.length - 1)
@@ -59,11 +58,11 @@ export function useImagePreview () {
     preable,
     nextable,
     openImagePreviewDialog,
-    closeImagePreviewDialog
+    closeImagePreviewDialog,
   }
 }
 
-async function downloadImage (url: string, filename = 'bing_image.jpg') {
+async function downloadImage(url: string, filename = 'bing_image.jpg') {
   const a = document.createElement('a')
   a.href = url
   a.target = '_blank'
@@ -72,18 +71,17 @@ async function downloadImage (url: string, filename = 'bing_image.jpg') {
 }
 
 const ResolutionMap = {
-  '360p': "480x360",
-  '720p': "1280x720",
-  '1080p': "1920x1080",
-  '4k': "UHD" // 3840x2160
+  '360p': '480x360',
+  '720p': '1280x720',
+  '1080p': '1920x1080',
+  '4k': 'UHD', // 3840x2160
 } as const
 
 type Resolution = keyof typeof ResolutionMap
 
-function buildBingImageUrl (url: string, resolution: Resolution) {
-  if (!url.includes('bing.com/')) {
+function buildBingImageUrl(url: string, resolution: Resolution) {
+  if (!url.includes('bing.com/'))
     return url
-  }
 
   switch (resolution) {
     case '360p':
@@ -99,11 +97,11 @@ function buildBingImageUrl (url: string, resolution: Resolution) {
   }
 }
 
-export function useImageDownloader (_url: MaybeRefOrGetter<string>, resolution: Resolution = '1080p') {
+export function useImageDownloader(_url: MaybeRefOrGetter<string>, resolution: Resolution = '1080p') {
   const state = reactive({
     url: '',
     filename: '',
-    supported: true
+    supported: true,
   })
 
   watchEffect(() => {
@@ -111,7 +109,8 @@ export function useImageDownloader (_url: MaybeRefOrGetter<string>, resolution: 
 
     if (!url.includes('bing.com') && resolution !== '1080p') {
       state.supported = false
-    } else {
+    }
+    else {
       state.url = buildBingImageUrl(url, resolution)
       state.filename = url.split('/').pop() ?? 'bing_image.jpg'
     }
@@ -121,9 +120,9 @@ export function useImageDownloader (_url: MaybeRefOrGetter<string>, resolution: 
   const disabled = computed(() => !state.supported || downloading.value)
 
   const download = async () => {
-    if (disabled.value) {
+    if (disabled.value)
       return
-    }
+
     downloading.value = true
     await downloadImage(state.url, state.filename)
     downloading.value = false

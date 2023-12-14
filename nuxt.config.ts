@@ -1,18 +1,19 @@
-import { resolve } from "path";
+import { resolve } from 'node:path'
+import { cwd } from 'node:process'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
   ],
   devtools: { enabled: true },
   nitro: {
     serverAssets: [{
       baseName: 'archive',
-      dir: resolve(process.cwd(), 'archive'),
-    }]
+      dir: resolve(cwd(), 'archive'),
+    }],
   },
   experimental: {
-    inlineSSRStyles: false
-  }
+    inlineSSRStyles: false,
+  },
 })

@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
+defineOptions({ inheritAttrs: false })
+
 const props = defineProps(
   {
     modelValue: {
       type: Boolean,
-      required: true
+      required: true,
     },
     zIndex: {
       type: Number,
-      default: 100
+      default: 100,
     },
     closeByMask: {
       type: Boolean,
-      default: true
+      default: true,
     },
     useVIf: {
       type: Boolean,
-      default: true
-    }
-  }
+      default: true,
+    },
+  },
 )
-
-defineOptions({ inheritAttrs: false })
 
 const emit = defineEmits(['close', 'update:modelValue'])
 
@@ -31,17 +31,16 @@ const visible = computed(() => props.modelValue)
 const elDialogRoot = ref<HTMLDivElement>()
 const elDialogMain = ref<HTMLDivElement>()
 
-function close () {
+function close() {
   if (visible.value) {
     emit('close')
     emit('update:modelValue', false)
   }
 }
 
-function clickMask () {
-  if (props.closeByMask) {
+function clickMask() {
+  if (props.closeByMask)
     close()
-  }
 }
 
 const isVIf = computed(() => props.useVIf ? visible.value : true)
@@ -63,7 +62,7 @@ const { activate } = useFocusTrap(elDialogRoot, {
   returnFocusOnDeactivate: true,
 })
 
-function trapFocusDialog () {
+function trapFocusDialog() {
   if (isVShow.value)
     nextTick().then(() => activate())
 }
@@ -94,7 +93,7 @@ function bindTypeToAny($attrs: any) {
   position: fixed;
   inset: 0;
   overflow-y: auto;
-  overscroll-behavior: none
+  overscroll-behavior: none;
 }
 
 .dialog::-webkit-scrollbar {
@@ -117,7 +116,7 @@ function bindTypeToAny($attrs: any) {
 .dialog-mask--dimming {
   background-color: #000;
   opacity: 48%;
-  height: calc(100% + 0.5px)
+  height: calc(100% + 0.5px);
 }
 
 .dialog-content {
@@ -141,7 +140,9 @@ function bindTypeToAny($attrs: any) {
   overscroll-behavior: contain;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
   background-color: rgba(255, 255, 255, 0.24);
 }
 
@@ -157,7 +158,9 @@ function bindTypeToAny($attrs: any) {
 
 .dialog-visible-enter-active .dialog-main,
 .dialog-visible-leave-active .dialog-main {
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .dialog-visible-enter-from .dialog-mask,

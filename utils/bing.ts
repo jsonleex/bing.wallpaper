@@ -13,41 +13,41 @@ export interface BingImageQuery {
 }
 
 interface BingImageRaw {
-  startdate: string,
-  fullstartdate: string,
-  enddate: string,
-  url: string,
-  urlbase: string,
-  copyright: string,
-  copyrightlink: string,
-  title: string,
-  hsh: string,
+  startdate: string
+  fullstartdate: string
+  enddate: string
+  url: string
+  urlbase: string
+  copyright: string
+  copyrightlink: string
+  title: string
+  hsh: string
 }
 
 export const supportedMkt = [
-  "de-DE",
-  "en-CA",
-  "en-GB",
-  "en-IN",
-  "en-US",
-  "fr-FR",
-  "it-IT",
-  "ja-JP",
-  "zh-CN",
+  'de-DE',
+  'en-CA',
+  'en-GB',
+  'en-IN',
+  'en-US',
+  'fr-FR',
+  'it-IT',
+  'ja-JP',
+  'zh-CN',
 ] as const
 
 export type SupportedMkt = typeof supportedMkt[number]
 
 const imagePrefixUrl = 'https://www.bing.com'
 
-export async function fetchBingImages (query: BingImageQuery) {
+export async function fetchBingImages(query: BingImageQuery) {
   try {
     const res = await $fetch<{ images: BingImageRaw[] }>(
       `HPImageArchive.aspx`,
       {
         query: { ...query, format: 'js' },
         baseURL: imagePrefixUrl.replace('www', 'global'),
-      }
+      },
     )
 
     return (res.images ?? []).map((image): BingImage => ({
@@ -55,15 +55,16 @@ export async function fetchBingImages (query: BingImageQuery) {
       date: image.enddate.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'),
       title: image.title,
       copyright: image.copyright,
-      copyrightlink: image.copyrightlink
+      copyrightlink: image.copyrightlink,
     }))
-  } catch (error) {
+  }
+  catch (error) {
     console.error(`Fetch Bing image error: ${error}`)
     return []
   }
 }
 
-export function buildStorageKey (date: Date, prefix?: string) {
+export function buildStorageKey(date: Date, prefix?: string) {
   const YYYY = String(date.getFullYear())
   const MM = String(date.getMonth() + 1).padStart(2, '0')
   const DD = String(date.getDate()).padStart(2, '0')
@@ -89,24 +90,24 @@ const timeOffsetByMkt: Record<SupportedMkt, number> = {
 // 当前运行环境的时间偏移量，单位：分钟
 const SYSTEM_TIMEZONE_OFFSET = new Date().getTimezoneOffset()
 
-export function getNewDateByMkt (mkt: SupportedMkt) {
+export function getNewDateByMkt(mkt: SupportedMkt) {
   const offset = (timeOffsetByMkt[mkt] * 60 + SYSTEM_TIMEZONE_OFFSET) * 60 * 1000
   return new Date(Date.now() + offset)
 }
 
 export const MktItems: { code: SupportedMkt, icon: string, name: string }[] = [
-  { code: "de-DE", icon: '🇩🇪', name: 'Deutsch', },
-  { code: "en-CA", icon: '🇨🇦', name: 'English (Canada)', },
-  { code: "en-GB", icon: '🇬🇧', name: 'English (UK)', },
-  { code: "en-IN", icon: '🇮🇳', name: 'English (India)', },
-  { code: "en-US", icon: '🇺🇸', name: 'English (US)', },
-  { code: "fr-FR", icon: '🇫🇷', name: 'Francais', },
-  { code: "it-IT", icon: '🇮🇹', name: 'Italiano', },
-  { code: "ja-JP", icon: '🇯🇵', name: '日本語', },
-  { code: "zh-CN", icon: '🇨🇳', name: '简体中文', }
+  { code: 'de-DE', icon: '🇩🇪', name: 'Deutsch' },
+  { code: 'en-CA', icon: '🇨🇦', name: 'English (Canada)' },
+  { code: 'en-GB', icon: '🇬🇧', name: 'English (UK)' },
+  { code: 'en-IN', icon: '🇮🇳', name: 'English (India)' },
+  { code: 'en-US', icon: '🇺🇸', name: 'English (US)' },
+  { code: 'fr-FR', icon: '🇫🇷', name: 'Francais' },
+  { code: 'it-IT', icon: '🇮🇹', name: 'Italiano' },
+  { code: 'ja-JP', icon: '🇯🇵', name: '日本語' },
+  { code: 'zh-CN', icon: '🇨🇳', name: '简体中文' },
 ]
 
-export function getMktByRoute () {
+export function getMktByRoute() {
   let locale = useRoute().params.locale as SupportedMkt
 
   if (!supportedMkt.includes(locale)) {
@@ -114,5 +115,5 @@ export function getMktByRoute () {
     console.warn(`Unsupported locale: ${locale}, using en-US instead.`)
   }
 
-  return MktItems.find((l) => l.code === locale)!
+  return MktItems.find(l => l.code === locale)!
 }

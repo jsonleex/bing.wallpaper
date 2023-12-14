@@ -1,6 +1,7 @@
-import { BingImage, SupportedMkt, buildStorageKey, getNewDateByMkt, supportedMkt } from "@/utils/bing"
+import type { BingImage, SupportedMkt } from '@/utils/bing'
+import { buildStorageKey, getNewDateByMkt, supportedMkt } from '@/utils/bing'
 
-async function getBingImages (idx = 0, count = 1, mkt: SupportedMkt = 'en-US') {
+async function getBingImages(idx = 0, count = 1, mkt: SupportedMkt = 'en-US') {
   if (!supportedMkt.includes(mkt)) {
     console.warn(`Unsupported mkt: ${mkt}`)
     mkt = 'en-US'
@@ -15,14 +16,13 @@ async function getBingImages (idx = 0, count = 1, mkt: SupportedMkt = 'en-US') {
   const start = new Date(today.setDate(today.getDate() - idx))
   const end = new Date(today.setDate(today.getDate() - count))
 
-  while (start > end) {
+  while (start.getTime() > end.getTime()) {
     const key = buildStorageKey(start, mkt)
 
-    if (await storage.hasItem(key)) {
+    if (await storage.hasItem(key))
       images.push((await storage.getItem(key))!)
-    } else {
-      console.log(`No image find for ${key}`)
-    }
+    else
+      console.warn(`No image find for ${key}`)
 
     // 递减一天
     start.setDate(start.getDate() - 1)
