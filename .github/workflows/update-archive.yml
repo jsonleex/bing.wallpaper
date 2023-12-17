@@ -26,6 +26,6 @@ jobs:
           git config user.name "leex"
           git config user.email "jsonleex@163.com"
           git status --short
-          git add ./archive || true
-          git commit -m "ci: update archive" --short || true
+          git add ./archive
+          git commit -m "ci: update archive"
           git push
