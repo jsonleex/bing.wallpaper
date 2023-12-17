@@ -6,7 +6,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 const idx = argv[2] || 0
 
 https.get(
-  `https://wallpaper.leex.me/api/updates?idx=${idx}`,
+  `https://wallpaper.leex.vercel.app/api/updates?idx=${idx}`,
   (response) => {
     const statusCode = response.statusCode
     const contentType = response.headers['content-type']
