@@ -1,6 +1,6 @@
 # Bing Wallpaper
 
-[leex.wallpaper](https://wallpaper.leex.me)
+[leex.wallpaper](https://wallpaper.leex.vercel.app)
 
 ## features
 
