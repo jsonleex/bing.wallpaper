@@ -1,11 +1,12 @@
-# Bing Wallpaper
+# Bing Wallpaper Archive
 
 [leex.wallpaper](https://wallpaper.leex.vercel.app)
 
-## features
+## Features
 
 - [x] 🔄 Auto update daily
 - [x] 🇺🇳 Support multiple languages
+- [ ] 🏞️ Support multiple resolutions
 
 ## Data Source
 
