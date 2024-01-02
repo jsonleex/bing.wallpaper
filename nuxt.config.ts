@@ -18,6 +18,10 @@ export default defineNuxtConfig({
       dir: resolve(cwd(), 'archive'),
     }],
   },
+  features: {
+    // https://github.com/unocss/unocss/issues/3468#issuecomment-1871049463
+    inlineStyles: false,
+  },
   app: {
     head: {
       meta: [

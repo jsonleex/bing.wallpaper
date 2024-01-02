@@ -26,8 +26,14 @@ const market = computed({
   },
 })
 
-const { height: windowHeight } = useWindowSize()
+const { height: windowHeight, width: windowWidth } = useWindowSize()
 const { y: scrollY, x: scrollX } = useWindowScroll({ behavior: 'smooth' })
+
+const isMobile = computed(() => {
+  return windowWidth.value < 730
+})
+
+provide('isMobile', isMobile)
 
 const isBackTopVisible = computed(() => {
   return scrollY.value > windowHeight.value * 0.5
@@ -89,8 +95,8 @@ useIntersectionObserver(loadMoreRef, (entries) => {
     </header>
 
     <main class="mx-1 flex-1 md:mx-4">
-      <div v-if="images" class="grid grid-cols-1 gap-2 lg:grid-cols-5 md:grid-cols-2">
-        <image-card v-for="image in images" :key="image.url" :image="image" class="border-1" @click="handlePreviewChange(image.date)" />
+      <div v-if="images" class="grid grid-cols-2 gap-2 lg:grid-cols-5 md:grid-cols-3">
+        <image-card v-for="image in images" :key="image.url" :image="image" @click="handlePreviewChange(image.date)" />
       </div>
 
       <div ref="loadMoreRef" class="grid place-items-center">

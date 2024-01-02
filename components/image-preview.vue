@@ -5,6 +5,27 @@ const { previewDate, previewVisible, hidePreview, showNextImage, showPreviousIma
 const evaluating = ref(false)
 const image = computedAsync(() => getImageByDate(previewDate.value), null, { evaluating })
 
+const isMobile = inject('isMobile', ref(false))
+
+const previewUrl = computed(() => {
+  if (!image.value)
+    return ''
+  const { url } = image.value
+
+  if (!url.includes('/th?id='))
+    return url
+
+  return isMobile.value
+    ? url.replace('1920x1080', '768x1280')
+    : url
+})
+
+const imageMetaVisible = ref(true)
+
+function toggleImageMetaVisible() {
+  imageMetaVisible.value = !imageMetaVisible.value
+}
+
 const downloads = computed(() => {
   if (!image.value)
     return []
@@ -59,55 +80,80 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
 
 <template>
   <ui-dialog v-model="previewVisible" @close="hidePreview">
-    <div class="relative grid w-90vw place-items-center">
-      <span v-if="evaluating" class="i-system-uicons-loader animate-spin text-3xl" />
-
-      <template v-else-if="image">
-        <ui-image :src="image.url" :alt="image.title" class="aspect-[16/9]" />
-
-        <div class="w-full border-t bg-black:24 px-4 py-2 text-white backdrop-blur md:(absolute bottom-0 z-1 px-16 py-8)">
-          <h2 class="mb-1 text-xl md:text-3xl">
-            <span>{{ image.title }}</span>
-            <nuxt-link
-              v-if="image.copyrightlink" class="i-logos-bing mb--3px ml-1 inline-block" target="_blank"
-              :to="image.copyrightlink" tabindex="-1" title="Search in Bing"
-            />
-          </h2>
-          <p class="mb-1 text-sm leading-relaxed op-50">
-            {{ image.copyright }}
-          </p>
-          <div class="grid grid-cols-3 gap-1 md:(flex flex-wrap items-center)">
-            <button
-              v-for="item in downloads" :key="item.url"
-              class="[&[aria-busy]_i]:i-system-uicons-loader flex items-center gap-1 bg-black:24 p-2 text-white:60 outline-0 backdrop-blur [&&[aria-busy]_i]:(animate-spin) active:bg-black:32 md:(hover:bg-black:12)"
-              :data-url="item.url" @click="(event) => downloadImage(item.url, item.filename, event)"
-            >
-              <i class="i-system-uicons-box-download" />
-              <span class="text-sm">{{ item.label }}</span>
+    <div class="relative grid aspect-[3/5] h-85vh w-92vw place-items-center of-hidden bg-black:12 text-white md:aspect-[16/9]">
+      <div class="absolute inset-0 z-1 grid grid-rows-[auto_1fr]">
+        <div
+          class="grid grid-cols-3 w-full gap-1 border-b bg-black:12 p-2 shadow backdrop-blur transition-all"
+        >
+          <div class="flex items-center justify-start gap-1" />
+          <div class="flex items-center justify-center gap-1">
+            <span class="i-system-uicons-calendar-day" />
+            <span class="text-shadow">{{ previewDate }}</span>
+          </div>
+          <div class="flex items-center justify-end gap-1">
+            <button class="p-1 text-xl md:hover:bg-black:12" @click="hidePreview">
+              <div class="i-system-uicons-cross" />
             </button>
           </div>
         </div>
 
         <div
-          class="mt-1px w-full flex items-center gap-1px md:(absolute top-1/2 z-1 justify-between px-4 -translate-y-1/2)"
+          class="flex items-center justify-between p-2 md:p-4"
+          @click.self="toggleImageMetaVisible"
         >
           <button
-            class="flex flex-1 items-center justify-center bg-black:24 px-6 py-3 text-3xl text-white outline-0 backdrop-blur md:(flex-none border-1 rounded p-4 shadow hover:bg-black:12) active:bg-black:32"
+            class="border-1 p-3 text-2xl text-white shadow outline-0 backdrop-blur active:bg-black:32 md:(p-2 p-4 text-3xl hover:bg-black:12)"
             tabindex="-1" @click="showPreviousImage"
           >
             <div class="i-system-uicons-arrow-left" />
           </button>
+
           <button
-            class="flex flex-1 items-center justify-center bg-black:24 px-6 py-3 text-3xl text-white outline-0 backdrop-blur md:(flex-none border-1 rounded p-4 shadow hover:bg-black:12) active:bg-black:32"
+            class="border-1 p-3 text-2xl text-white shadow outline-0 backdrop-blur active:bg-black:32 md:(p-2 p-4 text-3xl hover:bg-black:12)"
             tabindex="-1" @click="showNextImage"
           >
             <div class="i-system-uicons-arrow-right" />
           </button>
         </div>
+      </div>
+
+      <template v-if="evaluating">
+        <span class="i-system-uicons-loader animate-spin text-3xl" />
       </template>
 
-      <div v-else class="py-16">
-        <span>Sorry, The image not found for Date {{ previewDate }}.</span>
+      <template v-else-if="image">
+        <ui-image :src="previewUrl" :alt="image.title" />
+
+        <div class="absolute inset-x-0 z-1 z-2 transition-all" :class="imageMetaVisible ? 'bottom-0' : 'bottom--100%'">
+          <div class="border-t bg-black:24 shadow backdrop-blur">
+            <section class="px-4 py-2 text-white md:(px-16 py-8)">
+              <h2 class="mb-1 text-xl md:text-3xl">
+                <span>{{ image?.title }}</span>
+                <nuxt-link
+                  v-if="image?.copyrightlink" class="i-logos-bing mb--3px ml-1 inline-block" target="_blank"
+                  :to="image?.copyrightlink" tabindex="-1" title="Search in Bing"
+                />
+              </h2>
+              <p class="mb-1 text-sm leading-relaxed op-50">
+                {{ image?.copyright }}
+              </p>
+              <div class="grid grid-cols-3 gap-1 md:(flex flex-wrap items-center)">
+                <button
+                  v-for="item in downloads" :key="item.url"
+                  class="[&[aria-busy]_i]:i-system-uicons-loader flex items-center gap-1 bg-rose-600:50 p-2 text-xs outline-0 backdrop-blur [&[aria-busy]_i]:animate-spin active:bg-rose-600:70 md:(hover:bg-rose-600:80)"
+                  :data-url="item.url" @click="(event) => downloadImage(item.url, item.filename, event)"
+                >
+                  <i class="i-system-uicons-cloud-download-alt text-4" />
+                  <span>{{ item.label }}</span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </template>
+
+      <div v-else class="w-full flex place-self-start items-center justify-center px-2 pt-25vh">
+        <span class="border-1 p-2 backdrop-blur">Sorry, the image for {{ previewDate }} is not available yet.</span>
       </div>
     </div>
   </ui-dialog>
