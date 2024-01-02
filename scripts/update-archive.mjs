@@ -30,7 +30,9 @@ https.get(
 
     response.setEncoding('utf8')
     let raw = ''
-    response.on('data', (chunk) => { raw += chunk })
+    response.on('data', (chunk) => {
+      raw += chunk
+    })
     response.on('end', () => {
       try {
         createFiles(JSON.parse(raw))
