@@ -27,5 +27,5 @@ jobs:
           git config user.email "jsonleex@163.com"
           git status --short
           git add ./archive
-          git commit -m "ci: update archive"
+          git commit -m "ci: update archive $(date +'%Y-%m-%d %H:%M')"
           git push

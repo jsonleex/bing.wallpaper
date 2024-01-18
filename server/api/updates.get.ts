@@ -31,8 +31,8 @@ async function fetchImagesFromBingApi(query: BingApiQuery) {
     )
 
     return (res.images ?? []).map((image): BingImageMeta => ({
-      url: ['https://www.bing.com', image.url.replace('&rf=LaDigue_1920x1080.jpg&pid=hp', '')].join('/').replace(/\/{2,}/g, '/'),
-      date: image.enddate,
+      url: `https://www.bing.com${image.url.replace('&rf=LaDigue_1920x1080.jpg&pid=hp', '')}`,
+      date: image.enddate.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'),
       title: image.title,
       copyright: image.copyright,
       copyrightlink: image.copyrightlink,

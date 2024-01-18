@@ -38,6 +38,9 @@ devDependencies:
   eslint-plugin-format:
     specifier: ^0.1.0
     version: 0.1.0(eslint@8.56.0)
+  fast-glob:
+    specifier: ^3.3.2
+    version: 3.3.2
   nuxt:
     specifier: ^3.9.0
     version: 3.9.0(@types/node@20.10.5)(eslint@8.56.0)(typescript@5.3.3)(vite@4.5.1)
@@ -1865,7 +1868,7 @@ packages:
       error-stack-parser-es: 0.1.1
       execa: 7.2.0
       fast-folder-size: 2.2.0
-      fast-glob: 3.3.1
+      fast-glob: 3.3.2
       get-port-please: 3.0.1
       global-dirs: 3.0.1
       h3: 1.7.1
@@ -5742,17 +5745,6 @@ packages:
       - supports-color
     dev: true
 
-  /fast-glob@3.3.1:
-    resolution: {integrity: sha512-kNFPyjhh5cKjrUltxs+wFx+ZkbRaxxmZ+X0ZU31SOsxCEtP9VPgtq2teZw1DebupL5GmDaNQ6yKMMVcM41iqDg==}
-    engines: {node: '>=8.6.0'}
-    dependencies:
-      '@nodelib/fs.stat': 2.0.5
-      '@nodelib/fs.walk': 1.2.8
-      glob-parent: 5.1.2
-      merge2: 1.4.1
-      micromatch: 4.0.5
-    dev: true
-
   /fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
     engines: {node: '>=8.6.0'}
@@ -6186,7 +6178,7 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       dir-glob: 3.0.1
-      fast-glob: 3.3.1
+      fast-glob: 3.3.2
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 4.0.0
@@ -9748,7 +9740,7 @@ packages:
     dependencies:
       '@rollup/pluginutils': 5.0.3
       escape-string-regexp: 5.0.0
-      fast-glob: 3.3.1
+      fast-glob: 3.3.2
       local-pkg: 0.4.3
       magic-string: 0.30.2
       mlly: 1.4.0
