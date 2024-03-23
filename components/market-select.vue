@@ -32,7 +32,7 @@ const selected = computed({
 
 <template>
   <ui-select>
-    <button class="flex items-center rounded-full p-2 text-2xl hover:bg-black:10">
+    <button class="flex items-center border-1 border-black:10 rounded-full p-2 text-2xl hover:bg-black:10">
       <div v-if="selected" class="leading-none">
         {{ selected.icon }}
       </div>

@@ -1,7 +1,7 @@
 :root {
   color: #0f0f0f;
   background-color: #f6f6f6;
-  --un-default-border-color: rgba(0, 0, 0, 0.1);
+  --un-default-border-color: rgba(255, 255, 255, 0.3);
 }
 
 ::-webkit-scrollbar {

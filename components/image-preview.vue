@@ -140,7 +140,7 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
               <div class="grid grid-cols-3 gap-1 md:(flex flex-wrap items-center)">
                 <button
                   v-for="item in downloads" :key="item.url"
-                  class="[&[aria-busy]_i]:i-system-uicons-loader flex items-center gap-1 bg-rose-600:50 p-2 text-xs outline-0 backdrop-blur [&[aria-busy]_i]:animate-spin active:bg-rose-600:70 md:(hover:bg-rose-600:80)"
+                  class="[&[aria-busy]_i]:i-system-uicons-loader flex items-center gap-1 border-1 border-rose-600:70 bg-rose-600:50 p-2 text-xs outline-0 backdrop-blur [&[aria-busy]_i]:animate-spin active:bg-rose-600:70 md:(hover:bg-rose-600:80)"
                   :data-url="item.url" @click="(event) => downloadImage(item.url, item.filename, event)"
                 >
                   <i class="i-system-uicons-cloud-download-alt text-4" />
