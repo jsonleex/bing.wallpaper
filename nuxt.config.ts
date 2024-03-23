@@ -3,7 +3,7 @@ import { cwd } from 'node:process'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: { enabled: true },
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
