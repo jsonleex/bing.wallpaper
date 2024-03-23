@@ -1,4 +1,4 @@
-const { writeFile } = require('node:fs/promises')
+const { writeFile, rm } = require('node:fs/promises')
 const { glob } = require('fast-glob')
 
 async function main() {
@@ -25,6 +25,8 @@ async function main() {
       JSON.stringify(data, null, 2),
       'utf-8',
     )
+
+    await rm(file)
   }
 }
 
