@@ -2,9 +2,11 @@
 useHead({
   title: 'Bing Wallpaper Archive',
   meta: [
-    { name: 'description', content: 'The Bing Wallpaper Archive.' },
+    { name: 'description', content: 'Explore the world one photo at a time' },
   ],
-  link: [],
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+  ],
 })
 </script>
 
