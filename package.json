@@ -26,6 +26,7 @@
     "eslint-plugin-format": "^0.1.0",
     "fast-glob": "^3.3.2",
     "nuxt": "^3.11.1",
+    "nuxt-gtag": "^2.0.5",
     "unocss": "^0.58.6"
   }
 }
