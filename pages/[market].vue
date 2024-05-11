@@ -92,7 +92,7 @@ useHead({
   ],
 })
 
-useCustomSeoMeta({ title: site.value.title, description: site.value.description, ogImage: '/_nuxt/public/og.jpeg' })
+useCustomSeoMeta({ title: site.value.title, description: site.value.description, ogImage: '/og.jpeg' })
 </script>
 
 <template>
