@@ -1,6 +1,7 @@
 # Bing Wallpaper Archive
 
-[leex.wallpaper](https://wallpaper.leex.me)
+- ⚒️ Nuxt3 + Vercel
+- 🚀 https://wallpaper.leex.me
 
 ## Features
 
