@@ -5,7 +5,6 @@ const loadMoreRef = ref<HTMLElement>()
 const route = useRoute()
 
 const { imageMap, loadImages, isFetching, resetImages } = useImages()
-const { showPreview } = usePreview()
 
 const market = computed(() => route.params.market as string)
 
@@ -47,10 +46,6 @@ const images = computed(() => {
 
 async function loadMoreImages() {
   await loadImages({ idx: images.value.length, count: 30, mkt: market.value })
-}
-
-function handlePreviewChange(date: string) {
-  showPreview(date)
 }
 
 useIntersectionObserver(loadMoreRef, (entries) => {
@@ -127,7 +122,7 @@ useCustomSeoMeta({ title: site.value.title, description: site.value.description,
 
     <main class="mx-1 flex-1 md:mx-4">
       <div v-if="images" class="grid grid-cols-2 gap-2 lg:grid-cols-5 md:grid-cols-3">
-        <image-card v-for="image in images" :key="image.url" :image="image" @click="handlePreviewChange(image.date)" />
+        <image-card v-for="image in images" :key="image.url" :image="image" />
       </div>
 
       <div ref="loadMoreRef" class="grid place-items-center">

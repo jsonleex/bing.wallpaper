@@ -1,10 +1,12 @@
 const previewDate = ref('')
+const previewDateNext = ref('')
+const previewDatePrev = ref('')
 const previewVisible = ref(false)
 
 type ValidDate = `${number}${number}${number}${number}-${number}${number}-${number}${number}`
 
 function isValidPreviewDate(s: unknown): s is ValidDate {
-  return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s)
+  return typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s) && new Date(s) < new Date()
 }
 
 function formatDate(d: Date): ValidDate {
@@ -17,48 +19,39 @@ function formatDate(d: Date): ValidDate {
 export function usePreview() {
   const route = useRoute()
 
-  function setPreviewDate(date?: ValidDate) {
-    previewDate.value = date ?? ''
-    previewVisible.value = !!date
-    navigateTo({ path: route.path, query: { ...route.query, date } })
+  function setPreviewDate(date: string = '') {
+    navigateTo({ params: { market: route.params.market, date } })
   }
 
-  onMounted(() => {
-    const date = route.query.date
-    isValidPreviewDate(date) && setPreviewDate(date)
-  })
-
-  function showNextImage() {
-    const date = previewDate.value
-    if (isValidPreviewDate(date)) {
-      const nextDate = new Date(date)
-      nextDate.setDate(nextDate.getDate() + 1)
-      const formatted = formatDate(nextDate)
-      if (nextDate.getTime() > Date.now()) {
-        // eslint-disable-next-line no-alert
-        alert(`Sorry, this image for ${formatted} is not available yet.`)
-        return
+  watch(
+    () => route.params.date as string,
+    (date) => {
+      if (isValidPreviewDate(date)) {
+        previewDate.value = date
+        const d = new Date(date)
+        previewDatePrev.value = formatDate(new Date(d.setDate(d.getDate() - 1)))
+        previewDateNext.value = formatDate(new Date(d.setDate(d.getDate() + 2)))
+        previewVisible.value = true
       }
-
-      setPreviewDate(formatted)
-    }
-  }
-
-  function showPreviousImage() {
-    const date = previewDate.value
-    if (isValidPreviewDate(date)) {
-      const previousDate = new Date(date)
-      previousDate.setDate(previousDate.getDate() - 1)
-      setPreviewDate(formatDate(previousDate))
-    }
-  }
+      else {
+        previewVisible.value = false
+        previewDate.value = ''
+        previewDatePrev.value = ''
+        previewDateNext.value = ''
+      }
+    },
+    {
+      immediate: true,
+    },
+  )
 
   return {
+    market: computed(() => route.params.market as string),
     previewVisible,
     previewDate,
-    showPreview: (date: string) => isValidPreviewDate(date) && setPreviewDate(date),
+    previewDateNext,
+    previewDatePrev,
+    showPreview: setPreviewDate,
     hidePreview: () => setPreviewDate(),
-    showNextImage,
-    showPreviousImage,
   }
 }

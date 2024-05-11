@@ -4,23 +4,17 @@ const props = defineProps<{ src: string, alt: string }>()
 const imageUrl = ref('')
 const loading = ref(true)
 
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
 function loadImage(src: string) {
   loading.value = true
   imageUrl.value = ''
 
-  const img = new Image()
-
-  img.onload = async () => {
-    await sleep(1000)
-    imageUrl.value = img.src
-    loading.value = false
-  }
-
-  img.src = src
+  setTimeout(
+    () => {
+      imageUrl.value = src
+      loading.value = false
+    },
+    800,
+  )
 }
 
 watch(() => props.src, loadImage)

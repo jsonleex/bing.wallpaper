@@ -1,3 +1,3 @@
 <template>
-  <nuxt-page />
+  <nuxt-page page-key="dummy" />
 </template>

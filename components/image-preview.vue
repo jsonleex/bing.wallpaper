@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { getImageByDate } = useImages()
-const { previewDate, previewVisible, hidePreview, showNextImage, showPreviousImage } = usePreview()
+const { market, previewDate, previewDateNext, previewDatePrev, previewVisible, hidePreview } = usePreview()
 
 const evaluating = ref(false)
 const image = computedAsync(() => getImageByDate(previewDate.value), null, { evaluating })
@@ -82,9 +82,7 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
   <ui-dialog v-model="previewVisible" @close="hidePreview">
     <div class="relative grid aspect-[3/5] h-85vh w-92vw place-items-center of-hidden bg-black:12 text-white md:aspect-[16/9]">
       <div class="absolute inset-0 z-1 grid grid-rows-[auto_1fr]">
-        <div
-          class="grid grid-cols-3 w-full gap-1 border-b bg-black:12 p-2 shadow backdrop-blur transition-all"
-        >
+        <div class="grid grid-cols-3 w-full gap-1 border-b bg-black:12 p-2 shadow backdrop-blur transition-all">
           <div class="flex items-center justify-start gap-1" />
           <div class="flex items-center justify-center gap-1">
             <span class="i-system-uicons-calendar-day" />
@@ -97,23 +95,21 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
           </div>
         </div>
 
-        <div
-          class="flex items-center justify-between p-2 md:p-4"
-          @click.self="toggleImageMetaVisible"
-        >
-          <button
+        <div class="flex items-center justify-between p-2 md:p-4" @click.self="toggleImageMetaVisible">
+          <nuxt-link
             class="border-1 p-3 text-2xl text-white shadow outline-0 backdrop-blur active:bg-black:32 md:(p-2 p-4 text-3xl hover:bg-black:12)"
-            tabindex="-1" @click="showPreviousImage"
+            :to="{ params: { market, date: previewDatePrev } }"
           >
             <div class="i-system-uicons-arrow-left" />
-          </button>
+          </nuxt-link>
 
-          <button
+          <nuxt-link
+            v-if="new Date(previewDateNext) < new Date()"
             class="border-1 p-3 text-2xl text-white shadow outline-0 backdrop-blur active:bg-black:32 md:(p-2 p-4 text-3xl hover:bg-black:12)"
-            tabindex="-1" @click="showNextImage"
+            :to="{ params: { market, date: previewDateNext } }"
           >
             <div class="i-system-uicons-arrow-right" />
-          </button>
+          </nuxt-link>
         </div>
       </div>
 
@@ -151,10 +147,6 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
           </div>
         </div>
       </template>
-
-      <div v-else class="w-full flex place-self-start items-center justify-center px-2 pt-25vh">
-        <span class="border-1 p-2 backdrop-blur">Sorry, the image for {{ previewDate }} is not available yet.</span>
-      </div>
     </div>
   </ui-dialog>
 </template>

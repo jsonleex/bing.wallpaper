@@ -2,7 +2,7 @@
   "name": "leex.wallpaper",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@8.15.8",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -13,20 +13,20 @@
     "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.9.0",
+    "@antfu/eslint-config": "^2.17.0",
     "@iconify-json/logos": "^1.1.42",
     "@iconify-json/system-uicons": "^1.1.12",
     "@nuxt/devtools": "latest",
-    "@types/node": "^20.11.30",
-    "@unocss/eslint-plugin": "^0.58.6",
-    "@unocss/nuxt": "^0.58.6",
+    "@types/node": "^20.12.11",
+    "@unocss/eslint-plugin": "^0.58.9",
+    "@unocss/nuxt": "^0.58.9",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
     "eslint": "^8.57.0",
-    "eslint-plugin-format": "^0.1.0",
+    "eslint-plugin-format": "^0.1.1",
     "fast-glob": "^3.3.2",
-    "nuxt": "^3.11.1",
+    "nuxt": "^3.11.2",
     "nuxt-gtag": "^2.0.5",
-    "unocss": "^0.58.6"
+    "unocss": "^0.58.9"
   }
 }
