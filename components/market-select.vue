@@ -42,14 +42,14 @@ const selected = computed({
     <template #options>
       <div class="of-hidden border-1 rounded shadow divide-y bg-base">
         <div v-for="item in markets" :key="item.code">
-          <button
+          <nuxt-link
             class="w-full flex flex-nowrap select-none items-center gap-2 rounded p-2"
             :class="[item.code === selected?.code ? 'bg-rose-600:80 text-white' : 'hover:(bg-rose-600:90 text-white)']"
-            @click="selected = item"
+            :to="`/${item.code}`"
           >
             <span class="text-xl">{{ item.icon }}</span>
             <span>{{ item.name }}</span>
-          </button>
+          </nuxt-link>
         </div>
       </div>
     </template>

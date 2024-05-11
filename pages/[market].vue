@@ -1,30 +1,27 @@
 <script setup lang="ts">
-const title = 'Bing Wallpaper Archive'
-const slogan = 'Explore the world one photo at a time'
-
 const headerRef = ref<HTMLElement>()
 const loadMoreRef = ref<HTMLElement>()
 
 const route = useRoute()
 
-const { imageMap, loadImages, resetImages, isFetching } = useImages()
+const { imageMap, loadImages, isFetching, resetImages } = useImages()
 const { showPreview } = usePreview()
 
-const market = computed({
-  get() {
-    return route.params.market as string
-  },
+const market = computed(() => route.params.market as string)
 
-  set(val: string) {
-    if (!isSupportedMarket(val)) {
-      console.warn(`Unsupported market: ${val}`)
-      val = 'en-US'
-    }
-    resetImages()
-    scrollTo({ y: 0 })
-    navigateTo(`/${val}`)
+watch(
+  () => market.value,
+  (val) => {
+    if (!isSupportedMarket(val))
+      navigateTo('/en-US')
+
+    else
+      resetImages()
   },
-})
+  {
+    immediate: true,
+  },
+)
 
 const { height: windowHeight, width: windowWidth } = useWindowSize()
 const { y: scrollY, x: scrollX } = useWindowScroll({ behavior: 'smooth' })
@@ -62,6 +59,40 @@ useIntersectionObserver(loadMoreRef, (entries) => {
       await loadMoreImages()
   })
 })
+
+const site = computed(() => {
+  return market.value === 'zh-CN'
+    ? {
+        lang: 'zh',
+        title: '必应壁纸',
+        description: '每日一图，带你领略世界之美',
+        keywords: '壁纸, 壁纸下载, 壁纸免费下载, 必应壁纸, 必应壁纸下载, 必应壁纸免费下载, 4k 壁纸, 4k 壁纸下载, 4k 壁纸免费下载, 高清壁纸, 高清壁纸下载, 高清壁纸免费下载',
+      }
+    : {
+        lang: 'en',
+        title: 'Bing Wallpaper Archive',
+        description: 'Explore the world one photo at a time',
+        keywords: 'wallpaper, wallpaper download, wallpaper free download, bing wallpaper, bing wallpaper download, bing wallpaper free download, 4k wallpaper, 4k wallpaper download, 4k wallpaper free download, HD wallpaper, HD wallpaper download, HD wallpaper free download',
+      }
+})
+
+useHead({
+  htmlAttrs: {
+    lang: site.value.lang,
+  },
+  link: [
+    { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+  ],
+  meta: [
+    { name: 'keywords', content: site.value.keywords },
+    { name: 'viewport', content: 'width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,viewport-fit=cover' },
+    { name: 'theme-color', content: 'black' },
+    { name: 'apple-mobile-web-app-capable', content: 'yes' },
+    { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+  ],
+})
+
+useCustomSeoMeta({ title: site.value.title, description: site.value.description, ogImage: '/_nuxt/public/og.jpeg' })
 </script>
 
 <template>
@@ -73,8 +104,8 @@ useIntersectionObserver(loadMoreRef, (entries) => {
       <div class="flex items-center">
         <div class="i-logos-bing mt--1 text-2xl" />
         <div class="mx-1">
-          <span class="font-bold">{{ title }}</span>
-          <span class="hidden sm:inline"> - {{ slogan }}</span>
+          <span class="font-bold">{{ site.title }}</span>
+          <span class="hidden op-90 sm:inline"> - {{ site.description }}</span>
         </div>
 
         <market-select v-model="market" />
