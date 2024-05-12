@@ -3,12 +3,15 @@ export function useCustomSeoMeta(options: MaybeRef<{
   description?: string
   ogImage?: string
 }>) {
+  const route = useRoute()
   const { previewImage } = usePreview()
 
   const defaults = unref(options)
 
   const title = computed(() =>
-    previewImage.value ? `${previewImage.value.title} | ${defaults.title}` : `${defaults.title} | ${defaults.description}`,
+    previewImage.value
+      ? `${previewImage.value.title} | ${defaults.title}`
+      : `${defaults.title} | ${defaults.description}`,
   )
 
   const description = computed(() =>
@@ -24,8 +27,10 @@ export function useCustomSeoMeta(options: MaybeRef<{
     description,
 
     ogImage,
-    ogTitle: title,
     ogImageAlt: title,
+    ogTitle: title,
+    ogType: 'website',
+    ogUrl: route.fullPath,
     ogDescription: description,
   })
 }

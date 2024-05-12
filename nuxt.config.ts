@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { cwd } from 'node:process'
+import { cwd, env } from 'node:process'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -25,13 +25,24 @@ export default defineNuxtConfig({
     id: 'G-YR2YHJVK0Q',
   },
   site: {
-    url: 'https://wallpaper.leex.me',
+    url: `${env.NUXT_SITE_URL}`,
+  },
+  sitemap: {
+    sources: ['/api/__sitemap__/urls'],
   },
   robots: {
-    rules: {
-      UserAgent: '*',
-      Disallow: '/',
-      Sitemap: `https://wallpaper.leex.me/sitemap.xml`,
-    },
+    rules: [
+      {
+        UserAgent: '*',
+        Disallow: '/',
+      },
+      {
+        Sitemap: `${env.NUXT_SITE_URL}/sitemap.xml`,
+      },
+      {
+        UserAgent: 'AhrefsSiteAudit',
+        Allow: '/',
+      },
+    ],
   },
 })
