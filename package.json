@@ -17,6 +17,8 @@
     "@iconify-json/logos": "^1.1.42",
     "@iconify-json/system-uicons": "^1.1.12",
     "@nuxt/devtools": "latest",
+    "@nuxtjs/robots": "^3.0.0",
+    "@nuxtjs/sitemap": "^5.1.5",
     "@unocss/eslint-plugin": "^0.60.0",
     "@unocss/nuxt": "^0.59.4",
     "@unocss/reset": "^0.59.4",

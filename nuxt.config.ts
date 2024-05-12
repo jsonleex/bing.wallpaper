@@ -8,6 +8,8 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@unocss/nuxt',
     'nuxt-gtag',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
   ],
   css: [
     '@unocss/reset/tailwind.css',
@@ -21,5 +23,15 @@ export default defineNuxtConfig({
   },
   gtag: {
     id: 'G-YR2YHJVK0Q',
+  },
+  site: {
+    url: 'https://wallpaper.leex.me',
+  },
+  robots: {
+    rules: {
+      UserAgent: '*',
+      Disallow: '/',
+      Sitemap: `https://wallpaper.leex.me/sitemap.xml`,
+    },
   },
 })
