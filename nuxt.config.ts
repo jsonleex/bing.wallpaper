@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import { cwd, env } from 'node:process'
+import { allMkt } from './config/market'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -9,7 +10,7 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     'nuxt-gtag',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
+    'nuxt-simple-robots',
   ],
   css: [
     '@unocss/reset/tailwind.css',
@@ -28,21 +29,18 @@ export default defineNuxtConfig({
     url: `${env.NUXT_SITE_URL}`,
   },
   sitemap: {
-    sources: ['/api/__sitemap__/urls'],
+    cacheMaxAgeSeconds: 60 * 60 * 8, // 8 Hours
+    sitemaps: allMkt.reduce(
+      (acc, mkt) => {
+        acc[mkt] = { sources: [`/api/__sitemap__/urls?mkt=${mkt}`] }
+        return acc
+      },
+      {} as Record<string, { sources: string[] }>,
+    ),
   },
   robots: {
-    rules: [
-      {
-        UserAgent: '*',
-        Disallow: '/',
-      },
-      {
-        Sitemap: `${env.NUXT_SITE_URL}/sitemap.xml`,
-      },
-      {
-        UserAgent: 'AhrefsSiteAudit',
-        Allow: '/',
-      },
+    sitemap: [
+      `/sitemap_index.xml`,
     ],
   },
 })

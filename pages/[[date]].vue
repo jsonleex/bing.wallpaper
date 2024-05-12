@@ -15,6 +15,7 @@ function scrollTo({ x = 0, y = 0 }: { x?: number, y?: number } = {}) {
   scrollY.value = y
 }
 
+const requestUrl = useRequestURL()
 const { market } = useMarket()
 
 useHead({
@@ -23,6 +24,7 @@ useHead({
   },
   link: [
     { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+    { rel: 'canonical', href: `${requestUrl.toString()}` },
   ],
   meta: [
     { name: 'keywords', content: market.value.keywords },
@@ -33,7 +35,12 @@ useHead({
   ],
 })
 
-useCustomSeoMeta({ title: market.value.title, description: market.value.description, ogImage: '/og.jpeg' })
+useCustomSeoMeta({
+  title: market.value.title,
+  description: market.value.description,
+  ogUrl: requestUrl.toString(),
+  ogImage: `${requestUrl.origin}/og.jpeg`,
+})
 </script>
 
 <template>
@@ -41,9 +48,12 @@ useCustomSeoMeta({ title: market.value.title, description: market.value.descript
     <header class="sticky top-0 z-10 mx-1 border-b-1 rounded-b px-4 py-2 shadow backdrop-blur md:mx-4 bg-base">
       <div class="flex items-center">
         <div class="i-logos-bing mt--1 text-2xl" />
-        <div class="mx-1">
-          <span class="font-bold">{{ market.title }}</span>
-          <span class="hidden op-90 sm:inline"> - {{ market.description }}</span>
+        <div class="mx-1 flex items-center">
+          <h1 class="font-bold">
+            {{ market.title }}
+          </h1>
+          <span class="mx-1 hidden sm:inline">-</span>
+          <span class="hidden sm:inline">{{ market.description }}</span>
         </div>
 
         <market-select />
@@ -58,7 +68,10 @@ useCustomSeoMeta({ title: market.value.title, description: market.value.descript
         </button>
 
         <div class="rounded-full p-2 text-2xl hover:bg-black:10">
-          <nuxt-link class="i-logos-github-icon?mask block text-inherit" target="_blank" to="https://github.com/jsonleex/leex.wallpaper" />
+          <nuxt-link
+            class="i-logos-github-icon?mask block text-inherit" target="_blank"
+            to="https://github.com/jsonleex/leex.wallpaper"
+          />
         </div>
       </div>
     </header>
@@ -67,7 +80,8 @@ useCustomSeoMeta({ title: market.value.title, description: market.value.descript
     <image-preview />
 
     <footer class="py-4 text-center bg-base">
-      <span class="text-xs op-50">© {{ new Date().getFullYear() }} · All pictures on this site are from Bing search</span>
+      <span class="text-xs op-50">© {{ new Date().getFullYear() }} · All pictures on this site are from Bing
+        search</span>
     </footer>
   </div>
 </template>
