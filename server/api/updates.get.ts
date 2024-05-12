@@ -1,5 +1,5 @@
 import type { BingImageMeta } from '~/types'
-import { supportedMarkets } from '~/utils/market'
+import { allMkt } from '~/config/market'
 
 interface BingApiQuery {
   n: number
@@ -48,11 +48,11 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event) as { idx: number }
   const updates: [string, BingImageMeta][] = []
 
-  for (const mkt of supportedMarkets) {
+  for (const mkt of allMkt) {
     const images = await fetchImagesFromBingApi({ n: 1, idx: Number(query.idx) || 0, mkt })
 
     for (const image of images)
-      updates.push([generateStorageKey(new Date(image.date), mkt), image])
+      updates.push([buildStorageKey(new Date(image.date), mkt), image])
   }
 
   return updates

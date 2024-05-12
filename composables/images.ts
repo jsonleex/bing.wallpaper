@@ -13,7 +13,6 @@ async function loadImages(query: { idx: number, count: number, mkt: string }) {
   state.isFetching = true
   const images = await $fetch('/api/images', { query })
   state.isFetching = false
-  state.hasMore = false
   state.hasMore = images.length >= query.count - 2
   images.forEach(image => state.imageMap.set(image.date, image))
 }
@@ -24,7 +23,7 @@ function resetImages() {
   state.isFetching = false
 }
 
-async function getImageByDate(date: string) {
+async function getImageByKey(date: string, mkt: string) {
   if (!date)
     return null
 
@@ -33,7 +32,7 @@ async function getImageByDate(date: string) {
   }
   else {
     try {
-      const image = await $fetch('/api/image', { query: { date } })
+      const image = await $fetch('/api/image', { query: { date, mkt } })
       state.imageMap.set(date, image)
       return image
     }
@@ -44,5 +43,5 @@ async function getImageByDate(date: string) {
 }
 
 export function useImages() {
-  return { ...toRefs(state), loadImages, resetImages, getImageByDate }
+  return { ...toRefs(state), loadImages, resetImages, getImageByKey }
 }

@@ -1,16 +1,59 @@
 <script setup lang="ts">
-const { getImageByDate } = useImages()
-const { market, previewDate, previewDateNext, previewDatePrev, previewVisible, hidePreview } = usePreview()
-
-const evaluating = ref(false)
-const image = computedAsync(() => getImageByDate(previewDate.value), null, { evaluating })
+import { formatDate } from '@vueuse/core'
 
 const isMobile = inject('isMobile', ref(false))
 
-const previewUrl = computed(() => {
-  if (!image.value)
+const route = useRoute()
+const regex = /(\d{4}-\d{2}-\d{2})/
+
+const { mkt } = useMarket()
+const { previewImage, getPreviewImage, isFeching } = usePreview()
+
+const previewDate = computed(() => {
+  const date = Array.isArray(route.params.date)
+    ? route.params.date[0]
+    : route.params.date
+
+  return regex.test(date) ? date : null
+})
+
+const previewDatePrev = computed(() => {
+  if (!previewDate.value)
     return ''
-  const { url } = image.value
+
+  const c = new Date(previewDate.value)
+  const d = new Date(c.setDate(c.getDate() - 1))
+
+  if (d < new Date('2016-03-05'))
+    return ''
+
+  return formatDate(d, 'YYYY-MM-DD')
+})
+
+const previewDateNext = computed(() => {
+  if (!previewDate.value)
+    return ''
+
+  const c = new Date(previewDate.value)
+  const d = new Date(c.setDate(c.getDate() + 1))
+
+  if (d > new Date())
+    return ''
+
+  return formatDate(d, 'YYYY-MM-DD')
+})
+
+watch(() => previewDate.value, async (date) => {
+  if (date)
+    await getPreviewImage(date)
+  else
+    previewImage.value = null
+}, { immediate: true })
+
+const previewUrl = computed(() => {
+  if (!previewImage.value)
+    return ''
+  const { url } = previewImage.value
 
   if (!url.includes('/th?id='))
     return url
@@ -27,12 +70,10 @@ function toggleImageMetaVisible() {
 }
 
 const downloads = computed(() => {
-  if (!image.value)
+  if (!previewImage.value)
     return []
-
-  const { url, date } = image.value
+  const { url, date } = previewImage.value
   const filename = `bing-${date}-1920x1080.jpg`
-
   if (url.includes('/th?id=')) {
     return [
       { label: '4k·UHD', url: url.replace('1920x1080', 'UHD'), filename: filename.replace('1920x1080', '4k_UHD') },
@@ -79,8 +120,10 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
 </script>
 
 <template>
-  <ui-dialog v-model="previewVisible" @close="hidePreview">
-    <div class="relative grid aspect-[3/5] h-85vh w-92vw place-items-center of-hidden bg-black:12 text-white md:aspect-[16/9]">
+  <ui-dialog :visible="!!previewImage" @close="navigateTo({ params: { date: '' }, query: { mkt } })">
+    <div
+      class="relative grid aspect-[3/5] h-85vh w-92vw place-items-center of-hidden bg-black:12 text-white md:aspect-[16/9]"
+    >
       <div class="absolute inset-0 z-1 grid grid-rows-[auto_1fr]">
         <div class="grid grid-cols-3 w-full gap-1 border-b bg-black:12 p-2 shadow backdrop-blur transition-all">
           <div class="flex items-center justify-start gap-1" />
@@ -89,49 +132,50 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
             <span class="text-shadow">{{ previewDate }}</span>
           </div>
           <div class="flex items-center justify-end gap-1">
-            <button class="p-1 text-xl md:hover:bg-black:12" @click="hidePreview">
+            <nuxt-link class="p-1 text-xl md:hover:bg-black:12" :to="{ params: { date: '' }, query: { mkt } }">
               <div class="i-system-uicons-cross" />
-            </button>
+            </nuxt-link>
           </div>
         </div>
 
         <div class="flex items-center justify-between p-2 md:p-4" @click.self="toggleImageMetaVisible">
           <nuxt-link
+            v-if="previewDatePrev" :to="{ params: { date: previewDatePrev }, query: { mkt } }"
             class="border-1 p-3 text-2xl text-white shadow outline-0 backdrop-blur active:bg-black:32 md:(p-2 p-4 text-3xl hover:bg-black:12)"
-            :to="{ params: { market, date: previewDatePrev } }"
           >
             <div class="i-system-uicons-arrow-left" />
           </nuxt-link>
 
           <nuxt-link
-            v-if="new Date(previewDateNext) < new Date()"
+            v-if="previewDateNext" :to="{ params: { date: previewDateNext }, query: { mkt } }"
             class="border-1 p-3 text-2xl text-white shadow outline-0 backdrop-blur active:bg-black:32 md:(p-2 p-4 text-3xl hover:bg-black:12)"
-            :to="{ params: { market, date: previewDateNext } }"
           >
             <div class="i-system-uicons-arrow-right" />
           </nuxt-link>
         </div>
       </div>
 
-      <template v-if="evaluating">
+      <template v-if="isFeching">
         <span class="i-system-uicons-loader animate-spin text-3xl" />
       </template>
 
-      <template v-else-if="image">
-        <ui-image :src="previewUrl" :alt="image.title" />
-
-        <div class="absolute inset-x-0 z-1 z-2 transition-all" :class="imageMetaVisible ? 'bottom-0' : 'bottom--100%'">
+      <template v-else-if="previewImage">
+        <ui-image :src="previewUrl" :alt="previewImage.title" />
+        <div
+          class="absolute inset-x-0 z-1 z-2 transition-all"
+          :class="imageMetaVisible ? 'bottom-0' : 'bottom--100%'"
+        >
           <div class="border-t bg-black:24 shadow backdrop-blur">
             <section class="px-4 py-2 text-white md:(px-16 py-8)">
               <h2 class="mb-1 text-xl md:text-3xl">
-                <span>{{ image?.title }}</span>
+                <span>{{ previewImage?.title }}</span>
                 <nuxt-link
-                  v-if="image?.copyrightlink" class="i-logos-bing mb--3px ml-1 inline-block" target="_blank"
-                  :to="image?.copyrightlink" tabindex="-1" title="Search in Bing"
+                  v-if="previewImage?.copyrightlink" class="i-logos-bing mb--3px ml-1 inline-block"
+                  target="_blank" :to="previewImage?.copyrightlink" tabindex="-1" title="Search in Bing"
                 />
               </h2>
               <p class="mb-1 text-sm leading-relaxed op-50">
-                {{ image?.copyright }}
+                {{ previewImage?.copyright }}
               </p>
               <div class="grid grid-cols-3 gap-1 md:(flex flex-wrap items-center)">
                 <button

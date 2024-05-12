@@ -1,24 +1,20 @@
-import { isSupportedMarket, newDateWithMarket } from '~/utils/market'
+interface ImageQuery {
+  mkt: string
+  date: string
+}
 
-export default defineEventHandler(async (event) => {
-  const query = getQuery(event) as { date: string, mkt: string }
+export default defineEventHandler(
+  async (event) => {
+    const query = getQuery<ImageQuery>(event)
 
-  let market
+    const market = useValidMarket(event)
 
-  if (isSupportedMarket(query.mkt)) {
-    market = query.mkt
-  }
-  else {
-    const lang = (getHeader(event, 'accept-language') ?? '').split(',')[0]
-    market = isSupportedMarket(lang) ? lang : 'en-US'
-  }
+    const key = buildStorageKey(new Date(query.date ?? getDateWithMarketOffset(market.offset)), market.lang)
+    const image = await getCachedImageWithStorageKey(key)
 
-  const key = generateStorageKey(new Date(query.date ?? newDateWithMarket(market)), market)
+    if (!image)
+      throw createError({ statusCode: 404, message: 'Image not found' })
 
-  const image = await getImageByStorageKey(key)
-
-  if (!image)
-    throw createError({ statusCode: 404, message: 'Image not found' })
-
-  return image
-})
+    return image
+  },
+)

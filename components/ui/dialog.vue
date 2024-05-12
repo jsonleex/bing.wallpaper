@@ -1,6 +1,7 @@
 <script setup lang="ts">
 export interface DialogProps {
-  modelValue: boolean
+  modelValue?: boolean
+  visible?: boolean
   zIndex?: number
   closeByMask?: boolean
   useVIf?: boolean
@@ -16,6 +17,7 @@ export interface DialogEmits {
 defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(defineProps<DialogProps>(), {
+  visible: false,
   zIndex: 100,
   closeByMask: true,
   useVIf: true,
@@ -25,7 +27,7 @@ const props = withDefaults(defineProps<DialogProps>(), {
 
 const emit = defineEmits<DialogEmits>()
 
-const visible = computed(() => props.modelValue)
+const visible = computed(() => props.modelValue || props.visible)
 
 const elDialogRoot = ref<HTMLDivElement>()
 const elDialogContent = ref<HTMLDivElement>()

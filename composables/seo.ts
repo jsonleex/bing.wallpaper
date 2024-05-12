@@ -3,22 +3,20 @@ export function useCustomSeoMeta(options: MaybeRef<{
   description?: string
   ogImage?: string
 }>) {
-  const { previewDate } = usePreview()
-  const { getImageByDate } = useImages()
+  const { previewImage } = usePreview()
 
   const defaults = unref(options)
-  const image = computedAsync(() => getImageByDate(previewDate.value))
 
   const title = computed(() =>
-    image.value ? `${image.value.title} | ${defaults.title}` : `${defaults.title} | ${defaults.description}`,
+    previewImage.value ? `${previewImage.value.title} | ${defaults.title}` : `${defaults.title} | ${defaults.description}`,
   )
 
   const description = computed(() =>
-    image.value?.copyright || defaults.description,
+    previewImage.value?.copyright || defaults.description,
   )
 
   const ogImage = computed(() =>
-    image.value?.url || defaults.ogImage,
+    previewImage.value?.url || defaults.ogImage,
   )
 
   useSeoMeta({
