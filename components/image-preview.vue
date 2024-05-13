@@ -120,7 +120,7 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
 </script>
 
 <template>
-  <ui-dialog :visible="!!previewImage" @close="navigateTo({ params: { date: '' }, query: { mkt } })">
+  <ui-dialog :visible="!!previewDate" @close="navigateTo({ params: { date: '' }, query: { mkt } })">
     <div
       class="relative grid aspect-[3/5] h-85vh w-92vw place-items-center of-hidden bg-black:12 text-white md:aspect-[16/9]"
     >
