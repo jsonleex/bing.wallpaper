@@ -2,7 +2,7 @@
   "name": "leex.wallpaper",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.1.1",
+  "packageManager": "pnpm@9.0.4",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
