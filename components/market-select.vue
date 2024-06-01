@@ -4,7 +4,7 @@ const { market, markets } = useMarket()
 
 <template>
   <ui-select>
-    <button class="flex items-center border-1 border-black:10 rounded-full p-2 text-2xl hover:bg-black:10">
+    <button class="grid aspect-square place-items-center border-1 border-black:10 rounded-full p-2 hover:bg-black:10">
       <div v-if="market" class="leading-none">
         {{ market.flag }}
       </div>

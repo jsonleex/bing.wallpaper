@@ -127,7 +127,7 @@ async function downloadImage(item: { url: string, label: string, filename: strin
       class="relative grid aspect-[3/5] h-85vh w-92vw place-items-center of-hidden bg-black:12 text-white md:aspect-[16/9]"
     >
       <div class="absolute inset-0 z-1 grid grid-rows-[auto_1fr]">
-        <div class="grid grid-cols-3 w-full gap-1 border-b bg-black:12 p-2 shadow backdrop-blur transition-all">
+        <div class="grid grid-cols-[1fr_2fr_1fr] w-full gap-1 border-b bg-black:12 p-2 shadow backdrop-blur transition-all">
           <div class="flex items-center justify-start gap-1" />
           <div class="flex items-center justify-center gap-1">
             <span class="i-system-uicons-calendar-day" />
