@@ -4,7 +4,7 @@ import { formatDate } from '@vueuse/core'
 const isMobile = inject('isMobile', ref(false))
 
 const route = useRoute()
-const regex = /(\d{4}-\d{2}-\d{2})/
+const regex = /\d{4}-\d{2}-\d{2}/
 
 const { mkt } = useMarket()
 const { previewImage, getPreviewImage, isFeching } = usePreview()
@@ -102,10 +102,12 @@ function downloadFile(url: string, filename: string) {
   a.click()
 }
 
-async function downloadImage(url: string, filename: string, event: MouseEvent) {
+async function downloadImage(item: { url: string, label: string, filename: string }, event: MouseEvent) {
+  const { url, label, filename } = item
   const button = event.currentTarget as HTMLButtonElement
   button.disabled = true
   button.setAttribute('aria-busy', 'true')
+  useTrackEvent('add_to_cart', { label, url })
   if (isSameOrigin(url)) {
     downloadFile(url, filename)
   }
@@ -181,7 +183,7 @@ async function downloadImage(url: string, filename: string, event: MouseEvent) {
                 <button
                   v-for="item in downloads" :key="item.url"
                   class="[&[aria-busy]_i]:i-system-uicons-loader flex items-center gap-1 border-1 border-rose-600:70 bg-rose-600:50 p-2 text-xs outline-0 backdrop-blur [&[aria-busy]_i]:animate-spin active:bg-rose-600:70 md:(hover:bg-rose-600:80)"
-                  :data-url="item.url" @click="(event) => downloadImage(item.url, item.filename, event)"
+                  :data-url="item.url" @click="(event) => downloadImage(item, event)"
                 >
                   <i class="i-system-uicons-cloud-download-alt text-4" />
                   <span>{{ item.label }}</span>
