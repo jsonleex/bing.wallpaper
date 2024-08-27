@@ -47,9 +47,11 @@ https.get(
 })
 
 function createFiles(files) {
+  console.log(`create ${files.length} files at ${new Date().toISOString()}`)
   // writeFileSync(`archive/updated_at`, new Date().toISOString())
   for (const [filename, data] of files) {
     const filepath = `archive/${filename}`
+    console.log(`- ${filepath}`)
 
     const dir = dirname(filepath)
     if (!existsSync(dir))
