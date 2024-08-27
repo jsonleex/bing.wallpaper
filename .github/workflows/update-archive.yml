@@ -2,9 +2,9 @@ name: Update Archive
 
 on:
   schedule:
-    # UTC 08:18 & 16:18
-    # 北京 16:18 & 00:18
-    - cron: '18 8,16 * * *'
+    # UTC 09:18 & 17:18
+    # 北京 17:18 & 01:18
+    - cron: '18 9,17 * * *'
   workflow_dispatch:
 
 permissions:
@@ -27,5 +27,5 @@ jobs:
           git config user.email "jsonleex@163.com"
           git status --short
           git add ./archive
-          git commit -m "ci: update archive $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "ci: update archive $(date --iso-8601=seconds)"
           git push
