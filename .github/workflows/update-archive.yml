@@ -2,9 +2,9 @@ name: Update Archive
 
 on:
   schedule:
-    # UTC 09:18 & 17:18
-    # 北京 17:18 & 01:18
-    - cron: '18 9,17 * * *'
+    # UTC 10:39 & 18:39
+    # 北京 18:39 & 02:39
+    - cron: '39 10,18 * * *'
   workflow_dispatch:
 
 permissions:
