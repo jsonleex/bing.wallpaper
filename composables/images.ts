@@ -36,7 +36,7 @@ async function getImageByKey(date: string, mkt: string) {
       state.imageMap.set(date, image)
       return image
     }
-    catch (error) {
+    catch {
       return null
     }
   }

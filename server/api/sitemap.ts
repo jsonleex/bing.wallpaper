@@ -1,5 +1,5 @@
-import { formatDate } from '@vueuse/core'
 import { asSitemapUrl } from '#imports'
+import { formatDate } from '@vueuse/core'
 import { markets } from '~/config/market'
 
 export default defineSitemapEventHandler(async () => {

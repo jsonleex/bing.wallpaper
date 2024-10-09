@@ -1,5 +1,5 @@
-import type { BingImageMeta } from '~/types'
 import { allMkt } from '~/config/market'
+import type { BingImageMeta } from '~/types'
 
 interface BingApiQuery {
   n: number
