@@ -1,7 +1,7 @@
 # Bing Wallpaper Archive
 
 - ⚒️ Nuxt3 + Vercel
-- 🚀 https://wallpaper.leex.me
+- 🚀 https://img6.zone.id
 
 ## Features
 
