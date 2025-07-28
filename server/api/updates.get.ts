@@ -30,9 +30,10 @@ async function fetchImagesFromBingApi(query: BingApiQuery) {
       },
     )
 
-    return (res.images ?? []).map((image): BingImageMeta => ({
+    return (res.images ?? []).map((image): BingImageMeta & { lang: string } => ({
       url: `https://www.bing.com${image.url.replace('&rf=LaDigue_1920x1080.jpg&pid=hp', '')}`,
       date: image.enddate.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3'),
+      lang: query.mkt,
       title: image.title,
       copyright: image.copyright,
       copyrightlink: image.copyrightlink,
@@ -46,13 +47,11 @@ async function fetchImagesFromBingApi(query: BingApiQuery) {
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event) as { idx: number }
-  const updates: [string, BingImageMeta][] = []
+  const updates: (BingImageMeta & { lang: string })[] = []
 
   for (const mkt of allMkt) {
     const images = await fetchImagesFromBingApi({ n: 1, idx: Number(query.idx) || 0, mkt })
-
-    for (const image of images)
-      updates.push([buildStorageKey(new Date(image.date), mkt), image])
+    updates.push(...images)
   }
 
   return updates

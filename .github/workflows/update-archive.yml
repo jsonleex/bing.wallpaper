@@ -20,12 +20,17 @@ jobs:
           node-version: 18
       - name: Fetch Updates from API
         run: node scripts/update-archive.mjs
+        env:
+          API_ENDPOINT: ${{ vars.API_ENDPOINT }}
       - name: Commit Updates to Github
         if: success()
+        env:
+          USER_NAME: ${{ vars.USER_NAME }}
+          USER_EMAIL: ${{ vars.USER_EMAIL }}
         run: |
-          git config user.name "leex"
-          git config user.email "jsonleex@163.com"
+          git config user.name $USER_NAME
+          git config user.email $USER_EMAIL
           git status --short
           git add ./archive
-          git commit -m "ci: update archive $(date --iso-8601=seconds)"
+          git commit --allow-empty -m "ci: update archive $(date --iso-8601=seconds)"
           git push
