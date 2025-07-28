@@ -6,7 +6,7 @@ import { argv } from 'node:process'
 const idx = argv[2] || 0
 
 https.get(
-  `https://wallpaper.leex.me/api/updates?idx=${idx}`,
+  `https://img6.zone.id/api/updates?idx=${idx}`,
   (response) => {
     const statusCode = response.statusCode
     const contentType = response.headers['content-type']
